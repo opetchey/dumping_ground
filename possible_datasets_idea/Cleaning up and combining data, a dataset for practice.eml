@@ -1,0 +1,318 @@
+Received: from idmx01.uzh.ch ([130.60.205.53])
+          by idlmail01.uzh.ch (IBM Domino Release 9.0.1FP9HF400)
+          with ESMTP id 2018031407131872-536034 ;
+          Wed, 14 Mar 2018 07:13:18 +0100 
+Received: from idsmtp02.uzh.ch ([130.60.206.121]:34933)
+	by idmx01.uzh.ch with esmtps (TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128)
+	(Exim 4.82)
+	(envelope-from <owen.petchey@ieu.uzh.ch>)
+	id 1evzeu-0003tt-Da
+	for owen.petchey@ieu.uzh.ch; Wed, 14 Mar 2018 07:13:18 +0100
+Received: from 83.58.150.83.ftth.as8758.net ([83.150.58.83] helo=[10.0.1.19])
+	by idsmtp02.uzh.ch with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+	(Exim 4.82)
+	(envelope-from <owen.petchey@ieu.uzh.ch>)
+	id 1evzet-000300-W3
+	for owen.petchey@ieu.uzh.ch; Wed, 14 Mar 2018 07:13:08 +0100
+From: Owen Petchey <owen.petchey@ieu.uzh.ch>
+Date: Wed, 14 Mar 2018 07:13:07 +0100
+Subject: Cleaning up and combining data, a dataset for practice
+Message-Id: <0EF824D1-FBB5-4450-B205-1A801F684FFC@ieu.uzh.ch>
+To: Owen Petchey <owen.petchey@ieu.uzh.ch>
+Content-Transfer-Encoding: 7bit
+Content-Type: multipart/alternative; boundary=Apple-Mail-7C6945B8-7624-4FE2-9873-A83898AFE167
+Mime-Version: 1.0 (1.0)
+X-Mailer: iPhone Mail (15D100)
+X-MIMETrack: Itemize by SMTP Server on idlmail01/Server/UZH(Release 9.0.1FP9HF400 |
+ February 15, 2018) at 03/14/2018 07:13:18 AM
+X-TNEFEvaluated: 1
+
+
+--Apple-Mail-7C6945B8-7624-4FE2-9873-A83898AFE167
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=utf-8
+
+
+
+----=20
+Cleaning up and combining data, a dataset for practice
+// R-bloggers
+
+(This article was first published on Clean Code, and kindly contributed to R=
+-bloggers)
+tldr: I created an open dataset for the explicit practice of data munging.
+Feel free to use it in assignments,
+but do mention where you got it from (CC-by-4.0). Also unicorns are awesome.=
+
+
+Find the dataset at: https://github.com/RMHogervorst/unicorns_on_unicycles
+
+Data munging / cleaning / engineering
+
+At work I was working with a two excel files that were slightly different bu=
+t
+could be combined into 1 dataset. This is very typical for day to day cleani=
+ng
+operations that analysts and data scientists do (statisticians too).
+
+I realized cleaning, joining and enriching is something that statistics clas=
+ses
+just take for granted. But if a student only works with perfectly prepared
+data, they are unable to work with real world data. Because the real world i=
+s
+someone handing you an excel file with weird values and beautiful colors, th=
+at
+you cannot use in your work. Or it is a webscraping exercise where some of t=
+he
+pages are missing and people can=E2=80=99t seem to spell right. Some people s=
+ay 80% of
+a data scientists work is cleaning data, so let us teach students how to do t=
+hat
+effectively. I made this dataset in R, but it does not really matter what to=
+ol
+you use to read and clean this set.
+
+What is the dataset about?
+
+All good datasets have a story, this dataset is thought to have been recorde=
+d by
+an amateur scientist, a natural philosopher by the name of Rudolphus
+in the 17th century in The Netherlands. This scientist
+recorded the annual population of unicorns in western Europe over a century a=
+nd also recorded
+the sales of unicycles in that same time period. Although not much of the
+accompanying text remains of
+the original documents, what we can read is the tables and the idea that
+Rudolphus thought there was some sort of relationship between uncorns and
+unicycle sales.
+
+what kind of tasks would a student have to do?
+
+There are 2 files, that contain a total of 3 tables. The tables can be
+connected to each other with full joins on countryname and year (To make it
+more difficult, you could remove one row in one of the sets).
+
+a student should:
+
+read in the data from excel
+recognize that one file contains 2 tables
+realize that countrynames are slightly different in 1 file
+join the files together
+create 1 =E2=80=98long=E2=80=99 tidy datafile (country, year, value1, value2=
+, value3)
+During analysis:
+
+realize that some years are missing
+perhaps impute, reason for reasons of missingness (disease epidemic in
+Austria, others are missing at random)
+find some relation between unicycles and unicorns in the 17th century in
+western Europe
+what can I do with this set?
+
+I=E2=80=99ve released the set under the creative commons cc-by-4.0 license. T=
+hat means
+you may remix, share, use commercially, and modify the dataset. I just want
+you to mention where you got the dataset from.
+If you think the units are stupid, change it. if you think the assignment is=
+
+too difficult, make it easier. Really, you can use it any way you want.
+
+I hope this set will help in teaching students the art of data munging. I al=
+so
+thought it was very funny to have unicorns on unicycles, but searching the
+internet shows I was hardly the first one to think of that pun. Ah well, jus=
+t
+goes to show that it was a good one.
+
+Find the dataset at: https://github.com/RMHogervorst/unicorns_on_unicycles
+
+Happy coding!
+
+Cleaning up and combining data, a dataset for practice was originally publis=
+hed by at Clean Code on March 12, 2018.
+
+To leave a comment for the author, please follow the link and comment on the=
+ir blog: Clean Code.
+R-bloggers.com offers daily e-mail updates about R news and tutorials on top=
+ics such as: Data science, Big Data, R jobs, visualization (ggplot2, Boxplot=
+s, maps, animation), programming (RStudio, Sweave, LaTeX, SQL, Eclipse, git,=
+ hadoop, Web Scraping) statistics (regression, PCA, time series, trading) an=
+d more...
+----=20
+
+Read in my feedly
+
+--Apple-Mail-7C6945B8-7624-4FE2-9873-A83898AFE167
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html;
+	charset=utf-8
+
+<html><head><meta http-equiv=3D"content-type" content=3D"text/html; charset=3D=
+utf-8"></head><body dir=3D"auto"><div>=20
+=20
+=20
+<br>=20
+<br>=20
+---- <br>=20
+<b><a href=3D"https://www.r-bloggers.com/cleaning-up-and-combining-data-a-da=
+taset-for-practice/">Cleaning up and combining data, a dataset for practice<=
+/a></b><br>=20
+// <b><a href=3D"https://www.r-bloggers.com/cleaning-up-and-combining-data-a=
+-dataset-for-practice/">R-bloggers</a></b><br>=20
+<br>=20
+<p></p><div><div><div><div data-show-faces=3D"false" data-height=3D"21" data=
+-width=3D"100" data-layout=3D"button_count" data-send=3D"true" data-href=3D"=
+https://www.r-bloggers.com/cleaning-up-and-combining-data-a-dataset-for-prac=
+tice/"></div></div><div></div></div><div></div></div>
+<div>
+(This article was first published on <strong><a href=3D"http://rmhogervorst.=
+nl/cleancode/blog/2018/03/12/a-dirty-dataset-for-you-to-clean.html"> Clean C=
+ode</a></strong>, and kindly contributed to <a rel=3D"nofollow" href=3D"http=
+s://www.r-bloggers.com/">R-bloggers)</a> </div>
+<p>tldr: I created an open dataset for the explicit practice of data munging=
+.<br>
+Feel free to use it in assignments,<br>
+but do mention where you got it from (CC-by-4.0). Also unicorns are awesome.=
+</p>
+<p>Find the dataset at: <a href=3D"https://github.com/RMHogervorst/unicorns_=
+on_unicycles">https://github.com/RMHogervorst/unicorns_on_unicycles</a></p>
+<h2>Data munging / cleaning / engineering</h2>
+<p>At work I was working with a two excel files that were slightly different=
+ but<br>
+could be combined into 1 dataset. This is very typical for day to day cleani=
+ng<br>
+operations that analysts and data scientists do (statisticians too).</p>
+<p>I realized cleaning, joining and enriching is something that statistics c=
+lasses<br>
+just take for granted. But if a student only works with perfectly prepared<b=
+r>
+data, they are unable to work with real world data. Because the real world i=
+s<br>
+someone handing you an excel file with weird values and beautiful colors, th=
+at<br>
+you cannot use in your work. Or it is a webscraping exercise where some of t=
+he<br>
+pages are missing and people can=E2=80=99t seem to spell right. Some people s=
+ay 80% of<br>
+a data scientists work is cleaning data, so let us teach students how to do t=
+hat<br>
+effectively. I made this dataset in R, but it does not really matter what to=
+ol<br>
+you use to read and clean this set.</p>
+<h3>What is the dataset about?</h3>
+<p>All good datasets have a story, this dataset is thought to have been reco=
+rded by<br>
+an amateur scientist, a natural philosopher by the name of Rudolphus<br>
+in the 17th century in The Netherlands. This scientist<br>
+recorded the annual population of unicorns in western Europe over a century a=
+nd also recorded<br>
+the sales of unicycles in that same time period. Although not much of the<br=
+>
+accompanying text remains of<br>
+the original documents, what we can read is the tables and the idea that<br>=
+
+Rudolphus thought there was some sort of relationship between uncorns and<br=
+>
+unicycle sales.</p>
+<h3>what kind of tasks would a student have to do?</h3>
+<p>There are 2 files, that contain a total of 3 tables. The tables can be<br=
+>
+connected to each other with full joins on countryname and year (To make it<=
+br>
+more difficult, you could remove one row in one of the sets).</p>
+<p>a student should:</p>
+<ul>
+<li>read in the data from excel</li>
+<li>recognize that one file contains 2 tables</li>
+<li>realize that countrynames are slightly different in 1 file</li>
+<li>join the files together</li>
+<li>create 1 =E2=80=98long=E2=80=99 tidy datafile (country, year, value1, va=
+lue2, value3)</li>
+</ul>
+<p>During analysis:</p>
+<ul>
+<li>realize that some years are missing</li>
+<li>perhaps impute, reason for reasons of missingness (disease epidemic in<b=
+r>
+Austria, others are missing at random)</li>
+<li>find some relation between unicycles and unicorns in the 17th century in=
+<br>
+western Europe</li>
+</ul>
+<h2>what can I do with this set?</h2>
+<p>I=E2=80=99ve released the set under the creative commons cc-by-4.0 licens=
+e. That means<br>
+you may remix, share, use commercially, and modify the dataset. I just want<=
+br>
+you to mention where you got the dataset from.<br>
+If you think the units are stupid, change it. if you think the assignment is=
+<br>
+too difficult, make it easier. Really, you can use it any way you want.</p>
+<p>I hope this set will help in teaching students the art of data munging. I=
+ also<br>
+thought it was very funny to have unicorns on unicycles, but searching the<b=
+r>
+internet shows I was hardly the first one to think of that pun. Ah well, jus=
+t<br>
+goes to show that it was a good one.</p>
+<p>Find the dataset at: <a href=3D"https://github.com/RMHogervorst/unicorns_=
+on_unicycles">https://github.com/RMHogervorst/unicorns_on_unicycles</a></p>
+<p>Happy coding!</p>
+<p><a rel=3D"nofollow" href=3D"http://rmhogervorst.nl/cleancode/blog/2018/03=
+/12/a-dirty-dataset-for-you-to-clean.html" target=3D"_blank">Cleaning up and=
+ combining data, a dataset for practice</a> was originally published by at <=
+a rel=3D"nofollow" href=3D"http://rmhogervorst.nl/cleancode" target=3D"_blan=
+k">Clean Code</a> on March 12, 2018.</p>
+	<p>
+</p><div>
+<div>To <strong>leave a comment</strong> for the author, please follow the l=
+ink and comment on their blog: <strong><a href=3D"http://rmhogervorst.nl/cle=
+ancode/blog/2018/03/12/a-dirty-dataset-for-you-to-clean.html"> Clean Code</a=
+></strong>.</div>
+<hr>
+<a rel=3D"nofollow" href=3D"https://www.r-bloggers.com/">R-bloggers.com</a> o=
+ffers <strong><a rel=3D"nofollow" href=3D"https://feedburner.google.com/fb/a=
+/mailverify?uri=3DRBloggers">daily e-mail updates</a></strong> about <a rel=3D=
+"nofollow" href=3D"https://www.r-project.org/" title=3D"The R Project for St=
+atistical Computing">R</a> news and <a rel=3D"nofollow" href=3D"https://www.=
+r-bloggers.com/search/tutorial" title=3D"R tutorials">tutorials</a> on topic=
+s such as: <a rel=3D"nofollow" href=3D"https://www.r-bloggers.com/search/dat=
+a%20science" title=3D"Data science">Data science</a>, <a rel=3D"nofollow" hr=
+ef=3D"https://www.r-bloggers.com/search/Big%20Data" title=3D"Big Data">Big D=
+ata, </a><a rel=3D"nofollow" href=3D"https://www.r-users.com/" title=3D"R jo=
+bs">R jobs</a>, visualization (<a rel=3D"nofollow" href=3D"https://www.r-blo=
+ggers.com/search/ggplot2" title=3D"ggplot and ggplot2 tutorials">ggplot2</a>=
+, <a rel=3D"nofollow" href=3D"https://www.r-bloggers.com/search/boxplot" tit=
+le=3D"Boxplots using lattice and ggplot2 tutorials">Boxplots</a>, <a rel=3D"=
+nofollow" href=3D"https://www.r-bloggers.com/search/map" title=3D"Maps and g=
+is">maps</a>, <a rel=3D"nofollow" href=3D"https://www.r-bloggers.com/search/=
+animation" title=3D"Animation in R">animation</a>), programming (<a rel=3D"n=
+ofollow" href=3D"https://www.r-bloggers.com/search/RStudio" title=3D"RStudio=
+ IDE for R">RStudio</a>, <a rel=3D"nofollow" href=3D"https://www.r-bloggers.=
+com/search/sweave" title=3D"Sweave and literate programming">Sweave</a>, <a r=
+el=3D"nofollow" href=3D"https://www.r-bloggers.com/search/LaTeX" title=3D"La=
+TeX in R">LaTeX</a>, <a rel=3D"nofollow" href=3D"https://www.r-bloggers.com/=
+search/SQL" title=3D"SQL and databases">SQL</a>, <a rel=3D"nofollow" href=3D=
+"https://www.r-bloggers.com/search/eclipse" title=3D"Eclipse IDE for R">Ecli=
+pse</a>, <a rel=3D"nofollow" href=3D"https://www.r-bloggers.com/search/git" t=
+itle=3D"git and github, Version Control System">git</a>, <a rel=3D"nofollow"=
+ href=3D"https://www.r-bloggers.com/search/hadoop" title=3D"Large data in R u=
+sing Hadoop">hadoop</a>, <a rel=3D"nofollow" href=3D"https://www.r-bloggers.=
+com/search/Web+Scraping" title=3D"Web Scraping of google, facebook, yahoo, t=
+witter and more using R">Web Scraping</a>) statistics (<a rel=3D"nofollow" h=
+ref=3D"https://www.r-bloggers.com/search/regression" title=3D"Regressions an=
+d ANOVA analysis tutorials">regression</a>, <a rel=3D"nofollow" href=3D"http=
+s://www.r-bloggers.com/search/PCA" title=3D"principal component analysis tut=
+orial">PCA</a>, <a rel=3D"nofollow" href=3D"https://www.r-bloggers.com/searc=
+h/time+series" title=3D"Time series">time series</a>, <a rel=3D"nofollow" hr=
+ef=3D"https://www.r-bloggers.com/search/trading" title=3D"finance trading">t=
+rading</a>) and more...
+<!-- incorrect visual --></div>=20
+<br>=20
+---- <br><br>=20
+Read in <b><a href=3D"https://feedly.com">my feedly</a></b>=20
+=20
+</div><div></div></body></html>=
+
+--Apple-Mail-7C6945B8-7624-4FE2-9873-A83898AFE167--

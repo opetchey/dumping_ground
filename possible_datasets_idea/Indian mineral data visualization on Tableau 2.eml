@@ -1,0 +1,167 @@
+From: Owen Petchey <owen.petchey@ieu.uzh.ch>
+Date: Wed, 14 Mar 2018 07:03:59 +0100
+Subject: Indian mineral data visualization on Tableau
+Message-Id: <1B341214-1B28-4F45-B600-A17C019AFBD0@ieu.uzh.ch>
+To: Owen Petchey <owen.petchey@ieu.uzh.ch>
+Content-Transfer-Encoding: 7bit
+Content-Type: multipart/alternative;
+	boundary=Apple-Mail-53F18E4C-EEC9-4728-9C47-4E96E16AE852
+Mime-Version: 1.0 (1.0)
+X-MIMETrack: Itemize by IMAP Server on idlmail02/Server/UZH(Release 9.0.1FP8HF192 | April
+ 25, 2017) at 03/14/2018 07:04:00 AM
+
+
+--Apple-Mail-53F18E4C-EEC9-4728-9C47-4E96E16AE852
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=utf-8
+
+
+
+----=20
+Indian mineral data visualization on Tableau
+// R-bloggers
+
+(This article was first published on My Data Science Journey, and kindly con=
+tributed to R-bloggers)
+Being a self learner and explorative by nature, I love to try out new techno=
+logy and keep learning something all the time. Especially, working in a Biot=
+ech organization as a data scientist, and being the only one in the region, =E2=
+=80=9Ctechnical=E2=80=9D talks and discussions are very limited from the pro=
+gramming world perspective. So I spend my evenings experimenting with techno=
+logy and reading tech blogs, websites and papers.
+
+One visualization tool I am in love with is Tableau. I find it very cool to b=
+e able to quickly build a dashboard of graphs, with all the interactivity, i=
+n few minutes. Of course data needs to be =E2=80=9Cprepared=E2=80=9D first l=
+ike any other data science.
+
+I installed the Tableau app from Tableau public website. Now the data, there=
+ is a plethora of data for budding data scientists to play with. I got this d=
+ata set from https://data.gov.in/ which provides data to the public as a par=
+t of the open data initiative from the Govt.
+
+I wanted to see how much the various minerals were produced and what were th=
+eir values were. Also see the states on the map of India and in parallel vis=
+ualize the numbers. Another interesting bit is to know what type of mineral e=
+ach is =E2=80=93 fuel, metallic or non metallic. After a few iterations, thi=
+s is how my dashboard finally looks.
+
+
+To leave a comment for the author, please follow the link and comment on the=
+ir blog: My Data Science Journey.
+R-bloggers.com offers daily e-mail updates about R news and tutorials on top=
+ics such as: Data science, Big Data, R jobs, visualization (ggplot2, Boxplot=
+s, maps, animation), programming (RStudio, Sweave, LaTeX, SQL, Eclipse, git,=
+ hadoop, Web Scraping) statistics (regression, PCA, time series, trading) an=
+d more...
+----=20
+
+Read in my feedly
+
+--Apple-Mail-53F18E4C-EEC9-4728-9C47-4E96E16AE852
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html;
+	charset=utf-8
+
+<html><head><meta http-equiv=3D"content-type" content=3D"text/html; charset=3D=
+utf-8"></head><body dir=3D"auto"><div>=20
+=20
+=20
+<br>=20
+<br>=20
+---- <br>=20
+<b><a href=3D"https://www.r-bloggers.com/indian-mineral-data-visualization-o=
+n-tableau/">Indian mineral data visualization on Tableau</a></b><br>=20
+// <b><a href=3D"https://www.r-bloggers.com/indian-mineral-data-visualizatio=
+n-on-tableau/">R-bloggers</a></b><br>=20
+<br>=20
+<p></p><div><div><div><div data-show-faces=3D"false" data-height=3D"21" data=
+-width=3D"100" data-layout=3D"button_count" data-send=3D"true" data-href=3D"=
+https://www.r-bloggers.com/indian-mineral-data-visualization-on-tableau/"></=
+div></div><div></div></div><div></div></div>
+<div>
+(This article was first published on <strong><a href=3D"https://sigmabetadat=
+a.blogspot.com/2018/03/indian-mineral-data-visualization-on.html"> My Data S=
+cience Journey</a></strong>, and kindly contributed to <a rel=3D"nofollow" h=
+ref=3D"https://www.r-bloggers.com/">R-bloggers)</a> </div>
+<p>Being a self learner and explorative by nature, I love to try out new tec=
+hnology and keep learning something all the time. Especially, working in a B=
+iotech organization as a data scientist, and being the only one in the regio=
+n, =E2=80=9Ctechnical=E2=80=9D talks and discussions are very limited from t=
+he programming world perspective. So I spend my evenings experimenting with t=
+echnology and reading tech blogs, websites and papers.</p>
+<p>One visualization tool I am in love with is Tableau. I find it very cool t=
+o be able to quickly build a dashboard of graphs, with all the interactivity=
+, in few minutes. Of course data needs to be =E2=80=9Cprepared=E2=80=9D firs=
+t like any other data science.</p>
+<p>I installed the Tableau app from <a rel=3D"nofollow" href=3D"https://publ=
+ic.tableau.com/en-us/s/" target=3D"_blank">Tableau public</a>&nbsp;website. N=
+ow the data, there is a plethora of data for budding data scientists to play=
+ with. I got this data set from&nbsp;<a rel=3D"nofollow" href=3D"https://dat=
+a.gov.in/" target=3D"_blank">https://data.gov.in/</a>&nbsp;which provides da=
+ta to the public as a part of the open data initiative from the Govt.</p>
+<p>I wanted to see how much the various minerals were produced and what were=
+ their values were. Also see the states on the map of India and in parallel v=
+isualize the numbers. Another interesting bit is to know what type of minera=
+l each is =E2=80=93 fuel, metallic or non metallic. After a few iterations, t=
+his is how my dashboard finally looks.</p>
+<div><div class=3D"feedlyNoScript"><a rel=3D"nofollow" href=3D"https://sigma=
+betadata.blogspot.com/2018/03/indian-mineral-data-visualization-on.html#" ta=
+rget=3D"_blank"><img alt=3D"India_minerals_1617 " src=3D"https://www.r-blogg=
+ers.com/&amp;%2347;public.tableau.com&amp;%2347;static&amp;%2347;images&amp;=
+%2347;In&amp;%2347;India_minerals_1617&amp;%2347;India_minerals_1617&amp;%23=
+47;1_rss.png"></a></div></div>
+<p> </p>
+	<p>
+</p><div>
+<div>To <strong>leave a comment</strong> for the author, please follow the l=
+ink and comment on their blog: <strong><a href=3D"https://sigmabetadata.blog=
+spot.com/2018/03/indian-mineral-data-visualization-on.html"> My Data Science=
+ Journey</a></strong>.</div>
+<hr>
+<a rel=3D"nofollow" href=3D"https://www.r-bloggers.com/">R-bloggers.com</a> o=
+ffers <strong><a rel=3D"nofollow" href=3D"https://feedburner.google.com/fb/a=
+/mailverify?uri=3DRBloggers">daily e-mail updates</a></strong> about <a rel=3D=
+"nofollow" href=3D"https://www.r-project.org/" title=3D"The R Project for St=
+atistical Computing">R</a> news and <a rel=3D"nofollow" href=3D"https://www.=
+r-bloggers.com/search/tutorial" title=3D"R tutorials">tutorials</a> on topic=
+s such as: <a rel=3D"nofollow" href=3D"https://www.r-bloggers.com/search/dat=
+a%20science" title=3D"Data science">Data science</a>, <a rel=3D"nofollow" hr=
+ef=3D"https://www.r-bloggers.com/search/Big%20Data" title=3D"Big Data">Big D=
+ata, </a><a rel=3D"nofollow" href=3D"https://www.r-users.com/" title=3D"R jo=
+bs">R jobs</a>, visualization (<a rel=3D"nofollow" href=3D"https://www.r-blo=
+ggers.com/search/ggplot2" title=3D"ggplot and ggplot2 tutorials">ggplot2</a>=
+, <a rel=3D"nofollow" href=3D"https://www.r-bloggers.com/search/boxplot" tit=
+le=3D"Boxplots using lattice and ggplot2 tutorials">Boxplots</a>, <a rel=3D"=
+nofollow" href=3D"https://www.r-bloggers.com/search/map" title=3D"Maps and g=
+is">maps</a>, <a rel=3D"nofollow" href=3D"https://www.r-bloggers.com/search/=
+animation" title=3D"Animation in R">animation</a>), programming (<a rel=3D"n=
+ofollow" href=3D"https://www.r-bloggers.com/search/RStudio" title=3D"RStudio=
+ IDE for R">RStudio</a>, <a rel=3D"nofollow" href=3D"https://www.r-bloggers.=
+com/search/sweave" title=3D"Sweave and literate programming">Sweave</a>, <a r=
+el=3D"nofollow" href=3D"https://www.r-bloggers.com/search/LaTeX" title=3D"La=
+TeX in R">LaTeX</a>, <a rel=3D"nofollow" href=3D"https://www.r-bloggers.com/=
+search/SQL" title=3D"SQL and databases">SQL</a>, <a rel=3D"nofollow" href=3D=
+"https://www.r-bloggers.com/search/eclipse" title=3D"Eclipse IDE for R">Ecli=
+pse</a>, <a rel=3D"nofollow" href=3D"https://www.r-bloggers.com/search/git" t=
+itle=3D"git and github, Version Control System">git</a>, <a rel=3D"nofollow"=
+ href=3D"https://www.r-bloggers.com/search/hadoop" title=3D"Large data in R u=
+sing Hadoop">hadoop</a>, <a rel=3D"nofollow" href=3D"https://www.r-bloggers.=
+com/search/Web+Scraping" title=3D"Web Scraping of google, facebook, yahoo, t=
+witter and more using R">Web Scraping</a>) statistics (<a rel=3D"nofollow" h=
+ref=3D"https://www.r-bloggers.com/search/regression" title=3D"Regressions an=
+d ANOVA analysis tutorials">regression</a>, <a rel=3D"nofollow" href=3D"http=
+s://www.r-bloggers.com/search/PCA" title=3D"principal component analysis tut=
+orial">PCA</a>, <a rel=3D"nofollow" href=3D"https://www.r-bloggers.com/searc=
+h/time+series" title=3D"Time series">time series</a>, <a rel=3D"nofollow" hr=
+ef=3D"https://www.r-bloggers.com/search/trading" title=3D"finance trading">t=
+rading</a>) and more...
+<!-- incorrect visual --></div>=20
+<br>=20
+---- <br><br>=20
+Read in <b><a href=3D"https://feedly.com">my feedly</a></b>=20
+=20
+</div><div></div></body></html>=
+
+--Apple-Mail-53F18E4C-EEC9-4728-9C47-4E96E16AE852--

@@ -1,0 +1,57 @@
+---
+title: 'Dataset: Hunting to extinction'
+author: "Owen Petchey"
+date: "2/21/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+https://cran.r-project.org/web/packages/Mediana/vignettes/mediana.html
+
+
+
+
+
+
+
+## The publication
+
+From the paper *Hunting to extinction: biology and regional economy influence extinction risk and the impact of hunting in artiodactyls* by Price and Gittleman, 2007, in PRSB [paper on PRSB website](http://rspb.royalsocietypublishing.org/content/274/1620/1845).
+
+## Getting the raw data
+
+[The dataset is available in an Excel file from Dryad.](https://datadryad.org/resource/doi:10.5061/dryad.82/1). This excel file (named `PriceGittleman_2007_append.xls`) contains one worksheet with data.
+
+## Some initial processing
+
+The data worksheet was saved as a csv file `hunting_to_extinction_price_gittleman_2007_raw.csv`.
+
+The first two rows of the data contain the variable names, so we do a little processing in R, to make one row of variable names and save the new file to csv with `processed1` at the end of the filename, and put it on github.
+
+```{r, eval=FALSE}
+library(readr)
+library(stringr)
+dd <-read_csv("https://raw.githubusercontent.com/opetchey/insights_public_resources/master/datasets/hunting_to_extinction_price_gittleman_2007_raw.csv?token=ADEO-rAmuoLWWvuH2lZVSzSyTNI1cP1_ks5alvr6wA%3D%3D",
+              skip=2,
+              col_names = FALSE)
+hl <- read_lines("https://raw.githubusercontent.com/opetchey/insights_public_resources/master/datasets/hunting_to_extinction_price_gittleman_2007_raw.csv?token=ADEO-rAmuoLWWvuH2lZVSzSyTNI1cP1_ks5alvr6wA%3D%3D", n_max = 2)
+hl <- str_split(hl,',')
+colnames(dd) <- sub('_$','',paste(hl[[1]],hl[[2]],sep=""))
+dd
+write_csv(dd, "hunting_to_extinction_price_gittleman_2007_processed1.csv")
+```
+
+
+## Location on github
+
+Here the csv with single header row -- `hunting_to_extinction_price_gittleman_2007_processed1.csv`
+
+```{r}
+library(readr)
+dd <- read_csv("https://raw.githubusercontent.com/opetchey/insights_public_resources/master/datasets/hunting_to_extinction_price_gittleman_2007_processed1.csv?token=ADEO-i1qB7dKJ5IRK3PPiDfmLKqocBv6ks5alvzVwA%3D%3D")
+dd
+```
+

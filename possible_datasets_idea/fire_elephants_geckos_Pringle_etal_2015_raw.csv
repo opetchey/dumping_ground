@@ -1,0 +1,13 @@
+﻿Patch,Patch size (m^2),Patch size (hectares),Block,KLEE Exclusion Treatment,Fire Treatment,July 2013 lizard abundance,July 2013 lizard density per ha,March 2014 lizard abundance,March 2014 lizard density per ha,July 2014 lizard abundance,July 2014 lizard density per ha,Total no. trees,Tree density per ha,Mean tree height (m),Mean tree circumference (cm),Total # sticky trap insects 2013,Total # sticky trap insects 2014,Total insect length (mm) 2013,Total insect length (mm) 2014,Number of elephant-damaged trees,Density of elephant-damaged trees per ha,No. trees occupied by ant C. sjostedti,No. trees occupied by ant C. mimosae,No. trees occupied by ant C. nigriceps,No. trees occupied by ant T. penzigi,No. empty trees (no ants),No. trees not Acacia drepanolobium (no ants)
+C-MWC-B,900,0.09,Central,Elephants present,Burned,76.8,853.33,94.8,1053.33,47.1,523.70,114,1266.67,2.24,19.05,40,38,143,103.5,40,444.4444444,44,36,10,1,21,2
+C-MWC-U,900,0.09,Central,Elephants present,Unburned,16.5,183.33,22.4,248.89,15.2,169.14,92,1022.22,1.61,17.90,27,118,97,459.5,6,66.66666667,44,20,3,8,0,17
+C-WC-B,900,0.09,Central,No elephants,Burned,24.3,270.00,53.8,597.78,44.1,489.49,97,1077.78,2.21,17.35,23,68,82,172.5,0,0,35,26,13,0,21,2
+C-WC-U,900,0.09,Central,No elephants,Unburned,23.1,256.67,28.3,314.44,28.9,320.99,118,1311.11,2.48,16.60,30,82,111,176.5,0,0,40,40,14,21,3,0
+N-MWC-B,900,0.09,North,Elephants present,Burned,70.6,784.44,97.4,1082.22,59.4,659.88,69,766.67,1.85,20.59,39,44,139,112,36,400,22,33,0,0,10,4
+N-MWC-U,900,0.09,North,Elephants present,Unburned,26.9,298.89,25.8,286.67,23.3,258.73,43,477.78,2.33,18.58,53,63,172,142,3,33.33333333,0,32,2,4,5,0
+N-WC-B,900,0.09,North,No elephants,Burned,37.6,417.78,40.7,452.22,45.9,510.00,81,900.00,2.33,19.41,31,54,115,126.5,0,0,12,40,2,1,24,2
+N-WC-U,900,0.09,North,No elephants,Unburned,19.1,212.22,28.4,315.56,14.1,156.17,108,1200.00,2.33,16.97,25,51,128,125.5,0,0,25,42,4,34,2,1
+S-MWC-B,900,0.09,South,Elephants present,Burned,59.5,661.11,58.8,653.33,32.8,364.20,94,1044.44,2.13,17.52,33,51,117,119,26,288.8888889,32,32,5,0,24,1
+S-MWC-U,900,0.09,South,Elephants present,Unburned,32.1,356.67,43.9,487.78,19.8,220.37,86,955.56,2.37,16.14,39,40,136,93.5,3,33.33333333,14,59,0,8,2,3
+S-WC-B,900,0.09,South,No elephants,Burned,34.2,380.00,67,744.44,57.5,638.89,104,1155.56,2.59,19.64,20,34,91,102,0,0,18,43,8,2,29,4
+S-WC-U,900,0.09,South,No elephants,Unburned,35,388.89,38,422.22,31.8,353.09,75,833.33,3.11,22.17,65,22,400,67.5,0,0,42,19,4,8,1,1

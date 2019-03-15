@@ -1,0 +1,32 @@
+---
+title: 'Dataset: Biodiversity change'
+author: "Owen Petchey"
+date: "2/21/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## The publication
+
+From the paper *Global meta-analysis reveals no net change in local-scale plant biodiversity over time* by Vellend et al, 2013, in PNAS [paper on PNAS website](http://www.pnas.org/content/110/48/19456).
+
+## Getting the raw data
+
+[The dataset is available in an Excel file on the PNAS web site.](http://www.pnas.org/content/110/48/19456/tab-figures-data). This excel file (named `sd01.xls) contains to worksheets. One is the data, the other (named metadata) describes the variables.
+
+## Some initial processing
+
+The data worksheet was saved as a csv file `biodiversity_change_vellend_etal_2013_raw.csv`.
+
+## Location on github
+
+
+
+```{r}
+library(readr)
+dd <- read_csv("https://raw.githubusercontent.com/opetchey/insights_public_resources/master/datasets/biodiversity_change_vellend_etal_2013_raw.csv?token=ADEO-h8ObVCL8lx_OMjP19m4HoLVWf-lks5alq-iwA%3D%3D")
+```
+

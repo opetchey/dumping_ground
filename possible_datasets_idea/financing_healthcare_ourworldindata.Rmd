@@ -1,0 +1,45 @@
+---
+title: 'Dataset: Financing healthcare'
+author: "Owen Petchey"
+date: "2/21/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## The publication
+
+The data come from the website www.ourworldindata.org. A lot of healthcare financing information is given on this page https://ourworldindata.org/financing-healthcare with citation: Esteban Ortiz-Ospina and Max Roser (2018) - "Financing Healthcare". Published online at OurWorldInData.org. Retrieved from: 'https://ourworldindata.org/financing-healthcare' [Online Resource].
+
+The dataset used in Insights comes from the R package `ourworldindata`. The R package contains the code used to create the file, including the specific data sources used. Check out the code at the [`ourworldindata` github repository](https://github.com/drsimonj/ourworldindata/tree/master/R/data_prep).
+
+## Getting the raw data
+
+We saved the `financing_healthcare` dataset provided in the `ourworldindata` R package as a `csv` file and provide this.
+
+The name of the `csv` file is `financing_healthcare_ourworldindata.csv`.
+
+The dataset is quite clean and tidy, so no processed csv is required.
+
+```{r, eval=FALSE}
+install.packages("ourworldindata")
+library(ourworldindata)
+write_csv(financing_healthcare, "~/Desktop/financing_healthcare_ourworldindata_raw.csv")
+```
+
+
+## Some initial processing
+
+None.
+
+## Location on github
+
+```{r}
+library(readr)
+dd <- read_csv("https://raw.githubusercontent.com/opetchey/insights_public_resources/master/datasets/financing_healthcare_ourworldindata_raw.csv?token=ADEO-gzcPaSzLuDcYo4hPJqudNH8otJlks5amFPHwA%3D%3D")
+dd
+```
+

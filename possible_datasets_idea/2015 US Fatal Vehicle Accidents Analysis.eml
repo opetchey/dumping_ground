@@ -1,0 +1,945 @@
+Received: from idmx03.uzh.ch ([130.60.205.102])
+          by idlmail03.uzh.ch (IBM Domino Release 9.0.1FP8HF192)
+          with ESMTP id 2018031907245595-869069 ;
+          Mon, 19 Mar 2018 07:24:55 +0100 
+Received: from idsmtp01.uzh.ch ([130.60.206.120]:33804)
+	by idmx03.uzh.ch with esmtps (TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128)
+	(Exim 4.82)
+	(envelope-from <owen.petchey@ieu.uzh.ch>)
+	id 1exoDw-0003g4-RK
+	for owen.petchey@ieu.uzh.ch; Mon, 19 Mar 2018 07:24:56 +0100
+Received: from 83.58.150.83.ftth.as8758.net ([83.150.58.83] helo=[10.0.1.19])
+	by idsmtp01.uzh.ch with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+	(Exim 4.82)
+	(envelope-from <owen.petchey@ieu.uzh.ch>)
+	id 1exoDw-0007nj-HB
+	for owen.petchey@ieu.uzh.ch; Mon, 19 Mar 2018 07:24:48 +0100
+From: Owen Petchey <owen.petchey@ieu.uzh.ch>
+Date: Mon, 19 Mar 2018 07:24:47 +0100
+Subject: 2015 US Fatal Vehicle Accidents Analysis
+Message-Id: <0F8315B3-456D-40DF-89AF-36815291F815@ieu.uzh.ch>
+To: Owen Petchey <owen.petchey@ieu.uzh.ch>
+Content-Transfer-Encoding: 7bit
+Content-Type: multipart/alternative; boundary=Apple-Mail-0F45C5A5-4AF4-4F41-9DF3-91D5E76889EF
+Mime-Version: 1.0 (1.0)
+X-Mailer: iPhone Mail (15D100)
+X-MIMETrack: Itemize by SMTP Server on idlmail03/Server/UZH(Release 9.0.1FP8HF192 | April
+ 25, 2017) at 03/19/2018 07:24:55 AM
+X-TNEFEvaluated: 1
+
+
+--Apple-Mail-0F45C5A5-4AF4-4F41-9DF3-91D5E76889EF
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain;
+	charset=utf-8
+
+
+
+----=20
+2015 US Fatal Vehicle Accidents Analysis
+// R-bloggers
+
+(This article was first published on R =E2=80=93 NYC Data Science Academy Bl=
+og, and kindly contributed to R-bloggers)
+=E2=80=94
+title: =E2=80=9C2015 US Fatal Vehicle Accidents Analysis=E2=80=9D
+author: =E2=80=9CMatthew Sun=E2=80=9D
+date: =E2=80=9C2/01/2018=E2=80=9D
+output:
+html_document: default
+=E2=80=94
+
+
+
+
+
+#### Introduction
+
+=20
+
+There are over 5 millions of vehicle accidents reported in the US in 2015, a=
+ccording to data from National Highway Traffic Safety Administration (NHTSA)=
+. About 7% of them are fatal accidents. As the new technology of artificial i=
+ntelligence going to mature in the next one or two decades, self-driving veh=
+icles will become part of a normal life in human society. I am just wonderin=
+g how this new technology can help reduce the car accidents on the road.
+
+
+
+
+
+#### Data Overview
+
+=20
+
+There is a dataset on the NHTSA website for 2015 fatal accident: ftp.nhtsa.d=
+ot.gov. It reports the fatal incidents in major US cities, counties and stat=
+es. It also includes the longitude and latitude of the accidents so the data=
+ can be visualized on the map. The state, county and city are recorded in FI=
+PS codes. After proper data cleaning and re-arrangement, the following data f=
+ields are used in the analysis.
+
+* State
+* Population
+* County
+* City
+* Longitude
+* Latitude
+* Month
+* Day
+* Hour
+* Time of Day
+* Day Week
+* Day of Week
+* Collision Manner
+* Road Function
+* Interstate
+* Junction
+* Trafficway
+* Vehicles Involved
+* Drunken
+* Road Departure
+* Weather
+
+
+
+
+
+#### Geographical Analysis
+
+=20
+
+Each fatal accident can be represented on the US geographical map as a blue c=
+ircle dot, by its longitude and latitude number. By slicing the data accordi=
+ng to the combination of chosen state, including all states as an option, th=
+e fatal accidents can be visually inspected on US map in each state. The dat=
+a can also be sliced by a timeframe of continuous number of hours ranging fr=
+om one to 24. All the vehicle accident volumes on the map are aggregated int=
+o annual summation. The volume of the accidents can be differentiated by the=
+ intensity of blue color in each dot. By hovering the mouse over each dot, i=
+t will show a pop up message with the county name, a total number of vehicle=
+ accidents within the chosen timeframe and the state name.
+
+
+
+=E2=80=9C`{r map, message=3DFALSE, include=3DFALSE}
+knitr::opts_chunk$set(eval =3D TRUE, echo=3DTRUE)
+library(dplyr)
+library(data.table)
+library(geojsonio)
+library(leaflet)
+library(shiny)
+library(ggplot2)
+setwd(=E2=80=98~/NYC_data_science/projects/=E2=80=99)
+accidents <-fread(file =3D =E2=80=98./project1/vehicle_accidents.csv=E2=80=99=
+)
+collision_total <-accidents %>% filter(Hour < 24) %>%
+select(Hour, Collision_manner, Road_function)
+
+hour_range <-seq(from =3D 0, to =3D 1)
+state_range <-c(=E2=80=98California=E2=80=99, =E2=80=98New York=E2=80=99)
+accidents_selection <-accidents %>% filter(State %in% state_range & Hour %in=
+% hour_range) %>%
+select(State, State_ab, Longitude, Latitude, County, Hour, N_state, N_nation=
+,
+Density_state, Density_nation) %>% group_by(State) %>%
+mutate(N_hour_state =3D length(State), Ratio_state =3D N_hour_state/N_state)=
+ %>%
+ungroup()
+
+accidents_temp <-accidents_selection %>% select(State, N_hour_state, N_natio=
+n) %>%
+distinct() %>% mutate(N_hour_nation =3D sum(N_hour_state),
+Ratio_nation =3D N_hour_nation/N_nation) %>%
+select(-N_nation, -N_hour_state)
+accidents_selection <-accidents_selection %>% left_join(., accidents_temp, b=
+y =3D =E2=80=98State=E2=80=99) %>%
+group_by(State) %>% arrange(desc(N_hour_state))
+
+states <-geojson_read(=E2=80=98./project1/us_population_density.json=E2=80=99=
+, what =3D =E2=80=9Csp=E2=80=9D)
+bins <-c(0, 10, 20, 50, 100, 200, 500, 1000, Inf)
+pal <-colorBin(=E2=80=9CYlOrRd=E2=80=9D, domain =3D states$density, bins =3D=
+ bins)
+
+leaflet(data =3D states) %>% addProviderTiles(=E2=80=9CEsri.WorldStreetMap=E2=
+=80=9D) %>%
+setView(lng =3D -93.85, lat =3D 37.45, zoom =3D 4) %>%
+clearMarkers() %>%
+clearShapes() %>%
+addPolygons(
+fillColor =3D ~pal(density),
+weight =3D 2,
+opacity =3D 1,
+color =3D =E2=80=9Cwhite=E2=80=9D,
+dashArray =3D =E2=80=9C3=E2=80=9D,
+fillOpacity =3D 0.5) %>%
+addCircleMarkers(data =3D accidents_selection, ~Longitude, ~Latitude, radius=
+ =3D 2,
+stroke =3D F, fillOpacity =3D 1, fillColor =3D =E2=80=98blue=E2=80=99,
+label =3D paste0(=E2=80=98County: =E2=80=98, accidents_selection$County,
+=E2=80=98: =E2=80=98, accidents_selection$N_state))
+=E2=80=9C`
+
+
+Since the population of each state varies, the pure volume comparison is onl=
+y one side of the story. The US basemap is at the same time, plotted as chor=
+opleth map according to the 2012 population density of each state.
+
+
+
+=E2=80=9C`{r graph2, echo=3DFALSE, fig.height=3D5, fig.width=3D8, dev=3D=E2=80=
+=99png=E2=80=99}
+qty_vs_density <-accidents %>%
+select(State, N_state, Density_state, Density_nation) %>%
+group_by(State) %>% distinct() %>% arrange(desc(N_state))
+
+g <-ggplot(qty_vs_density, aes(x=3Dfactor(State, levels =3D unique(State)), y=
+=3DN_state+Density_state))
+g + geom_col(aes(fill=3DState)) + guides(fill=3DF) +
+theme(axis.text.x =3D element_text(angle =3D 50, hjust =3D 1, size =3D 6.5))=
+ +
+ylab(=E2=80=98No. of Accidents=E2=80=99) +
+xlab(=E2=80=98US States=E2=80=99) +
+ggtitle(=E2=80=98US Fatal Accidents Distribution =E2=80=93 Quantity vs Densi=
+ty=E2=80=99) +
+theme(plot.title =3D element_text(hjust =3D 0.5)) +
+geom_col(aes(x=3Dfactor(State, levels =3D unique(State)),y=3DDensity_state),=
+
+fill =3D =E2=80=98black=E2=80=99, alpha =3D 0.9, size =3D 0.25) +
+geom_hline(aes(yintercept =3DDensity_nation),
+linetype =3D =E2=80=98solid=E2=80=99, color =3D =E2=80=98red=E2=80=99, size =3D=
+ 0.5) +
+annotate(=E2=80=98text=E2=80=99, x=3D=E2=80=99Vermont=E2=80=99, y =3D 480, l=
+abel =3D =E2=80=98National Density\nLine (pp3m) =E2=80=93 Red=E2=80=99,
+size =3D 2.4, color =3D =E2=80=98red=E2=80=99)
+=E2=80=9C`
+
+
+The bar chart visualizes the fatal vehicle accidents volume against the acci=
+dent density, which is normalized by the population of each state. Since the=
+ density number is extremely low, I used parts per 3 million for visualizati=
+on comparison. The density of each state is plotted as black color, against a=
+ red line, which is national average density number.
+
+=46rom the bar chart, only South Carolina and Mississippi present both relat=
+ive high volume and high density. The remaining majority of high volume stat=
+es either align with or lower than the national average, after normalized wi=
+th the population.
+
+
+
+
+
+#### Cause Analysis
+
+=20
+
+These three charts demonstrate the three major reasons that have caused the f=
+atal accidents.
+
+
+
+=E2=80=9C`{r graph4, echo=3DFALSE, fig.height=3D4, fig.width=3D7, dev=3D=E2=80=
+=99png=E2=80=99}
+collision_rdeparture <-accidents %>% group_by(Collision_manner, Road_departu=
+re) %>%
+summarise(Num_collisions =3D n()) %>% group_by(Collision_manner) %>%
+mutate(Total =3D sum(Num_collisions)) %>%
+arrange(Total, Num_collisions)
+
+g <-ggplot(collision_rdeparture, aes(x =3D factor(Collision_manner,
+levels =3D unique(Collision_manner)), y =3D Num_collisions))
+g + geom_bar(aes(fill =3D Road_departure), stat =3D =E2=80=98identity=E2=80=99=
+, position =3D =E2=80=98dodge=E2=80=99) +
+theme(axis.text.x =3D element_text(angle =3D 50, hjust =3D 1, size =3D 8.5))=
+ +
+ylab(=E2=80=98No. of Accidents=E2=80=99) +
+xlab(=E2=80=98Collision Manner=E2=80=99) +
+ggtitle(=E2=80=98Impact of Road Departure on Fatal Accidents=E2=80=99) +
+theme(plot.title =3D element_text(hjust =3D 0.5, size =3D 11)) +
+guides(fill =3D guide_legend(=E2=80=98Road Departure=E2=80=99)) +
+theme(legend.title =3D element_text(size =3D 8),
+legend.position =3D =E2=80=98bottom=E2=80=99,
+legend.key.size =3D unit(0.2,=E2=80=99cm=E2=80=99),
+legend.text =3D element_text(size =3D 7))
+=E2=80=9C`
+
+
+=20
+
+Road Departure away from the road is the major contributor towards the stati=
+onary collision and Head-on collision.
+
+
+
+=E2=80=9C`{r graph5, echo=3DFALSE, fig.height=3D4, fig.width=3D7, dev=3D=E2=80=
+=99png=E2=80=99}
+
+collision_drunken <-accidents %>% group_by(Collision_manner, Drunken) %>%
+summarise(Num_collisions =3D n()) %>% group_by(Collision_manner) %>%
+mutate(Total =3D sum(Num_collisions)) %>%
+arrange(Total, Num_collisions)
+
+g <-ggplot(collision_drunken, aes(x =3D factor(Collision_manner,
+levels =3D unique(Collision_manner)), y =3D Num_collisions))
+g + geom_bar(aes(fill =3D Drunken), stat =3D =E2=80=98identity=E2=80=99, pos=
+ition =3D =E2=80=98dodge=E2=80=99) +
+theme(axis.text.x =3D element_text(angle =3D 50, hjust =3D 1, size =3D 8.5))=
+ +
+ylab(=E2=80=98No. of Accidents=E2=80=99) +
+xlab(=E2=80=98Collision Manner=E2=80=99) +
+ggtitle(=E2=80=98Impact of Drunken on Fatal Accidents=E2=80=99) +
+theme(plot.title =3D element_text(hjust =3D 0.5, size =3D 11)) +
+guides(fill =3D guide_legend(=E2=80=98Drunken =E2=80=93 BAC=E2=80=99)) +
+theme(legend.title =3D element_text(size =3D 8),
+legend.position =3D =E2=80=98bottom=E2=80=99,
+legend.key.size =3D unit(0.2,=E2=80=99cm=E2=80=99),
+legend.text =3D element_text(size =3D 7))
+=E2=80=9C`
+
+
+
+Drunken represented only 25% of stationary collision.
+
+
+
+=E2=80=9C`{r graph6, echo=3DFALSE, fig.height=3D4, fig.width=3D7, dev=3D=E2=80=
+=99png=E2=80=99}
+collision_weather <-accidents %>% group_by(Weather, Collision_manner) %>%
+summarise(Num_collisions =3D n()) %>% group_by(Weather) %>%
+mutate(Total =3D sum(Num_collisions)) %>%
+arrange(Total, Num_collisions)
+
+top_5_weather <-accidents %>% select(Weather, Collision_manner) %>%
+group_by(Weather) %>% summarise(Num_collisions =3D n()) %>%
+distinct() %>% top_n(5, wt =3D Num_collisions)
+
+collision_weather <-collision_weather %>% filter(Weather %in% top_5_weather$=
+Weather)
+
+g <-ggplot(collision_weather, aes(x =3D factor(Weather,
+levels =3D unique(Weather)), y =3D Num_collisions))
+g + geom_bar(aes(fill =3D Collision_manner), stat =3D =E2=80=98identity=E2=80=
+=99, position =3D =E2=80=98dodge=E2=80=99) +
+theme(axis.text.x =3D element_text(angle =3D 50, hjust =3D 1, size =3D 8.5))=
+ +
+ylab(=E2=80=98No. of Accidents=E2=80=99) +
+xlab(=E2=80=98Weather=E2=80=99) +
+ggtitle(=E2=80=98Impact of Weather on Fatal Accidents =E2=80=93 Top 5=E2=80=99=
+) +
+theme(plot.title =3D element_text(hjust =3D 0.5, size =3D 11)) +
+guides(fill =3D guide_legend(=E2=80=98Collision Manner=E2=80=99)) +
+theme(legend.title =3D element_text(size =3D 8),
+legend.position =3D =E2=80=98bottom=E2=80=99,
+legend.key.size =3D unit(0.2,=E2=80=99cm=E2=80=99),
+legend.key.height =3D unit(0.25,=E2=80=99cm=E2=80=99),
+legend.text =3D element_text(size =3D 7))
+=E2=80=9C`
+
+
+Surprisingly, the highest number of vehicle accidents, about two thirds of t=
+hem are under clear weather condition, and one of the involving vehicles was=
+ in stationary position. Definitely weather is not the major reason why acci=
+dents happened.
+
+
+
+
+
+#### Trend Analysis
+
+=20
+
+The collision manner time distribution by the hour clearly shows the top thr=
+ee collision manner, which is stationary, angle and head-on. I will investig=
+ate these three categories in more details.
+
+
+
+=E2=80=9C`{r graph3, echo=3DFALSE, fig.height=3D4, fig.width=3D7, dev=3D=E2=80=
+=99png=E2=80=99}
+collision_qty <-collision_total %>%
+group_by(Hour,Collision_manner) %>% summarise(Num_collisions =3Dn())
+
+g <-ggplot(collision_qty, aes(x=3DHour, y=3DNum_collisions))
+g + geom_area(aes(fill =3D Collision_manner)) +
+ylab(=E2=80=98No. of Accidents=E2=80=99) +
+xlab(=E2=80=98Hour=E2=80=99) +
+ggtitle(=E2=80=98Collision Manner Time Distribution by Hour=E2=80=99) +
+theme(plot.title =3D element_text(hjust =3D 0.5, size =3D 13)) +
+guides(fill =3D guide_legend(=E2=80=98Collision Manner=E2=80=99)) +
+theme(legend.title =3D element_text(size =3D 9),
+legend.position =3D =E2=80=98bottom=E2=80=99,
+legend.key.size =3D unit(0.3,=E2=80=99cm=E2=80=99),
+legend.key.height =3D unit(0.35,=E2=80=99cm=E2=80=99),
+legend.text =3D element_text(size =3D 8))
+=E2=80=9C`
+
+
+
+The next three area maps plot how each collision manner volume varies with t=
+he time during the day.
+
+
+
+=E2=80=9C`{r graph7, echo=3DFALSE, fig.height=3D4, fig.width=3D7, dev=3D=E2=80=
+=99png=E2=80=99}
+collision_station <-collision_total %>%
+filter(Collision_manner=3D=3D=E2=80=99Stationary collision=E2=80=99) %>%
+group_by(Hour, Road_function) %>%
+summarise(Num_collisions =3Dn())
+
+g <-ggplot(collision_station, aes(x=3DHour, y=3DNum_collisions))
+g + geom_area(aes(fill =3D Road_function)) +
+ylab(=E2=80=98No. of Accidents=E2=80=99) +
+xlab(=E2=80=98Hour=E2=80=99) +
+ggtitle(=E2=80=98Trend for Collision Manner =E2=80=93 Stationary Collision=E2=
+=80=99) +
+theme(plot.title =3D element_text(hjust =3D 0.5, size =3D 11)) +
+guides(fill =3D guide_legend(=E2=80=98Road Function=E2=80=99)) +
+theme(legend.title =3D element_text(size =3D 8),
+legend.position =3D =E2=80=98bottom=E2=80=99,
+legend.key.size =3D unit(0.2,=E2=80=99cm=E2=80=99),
+legend.key.height =3D unit(0.25,=E2=80=99cm=E2=80=99),
+legend.text =3D element_text(size =3D 7))
+=E2=80=9C`
+
+
+For stationary collision, the peak happened around 8:00 to 9:00pm. The secon=
+d peak happened at midnight.
+
+
+
+=E2=80=9C`{r graph8, echo=3DFALSE, fig.height=3D4, fig.width=3D7, dev=3D=E2=80=
+=99png=E2=80=99}
+collision_angle <-collision_total %>%
+filter(Collision_manner=3D=3D=E2=80=99Angle=E2=80=99) %>%
+group_by(Hour, Road_function) %>%
+summarise(Num_collisions =3Dn())
+
+g <-ggplot(collision_angle, aes(x=3DHour, y=3DNum_collisions))
+g + geom_area(aes(fill =3D Road_function)) +
+ylab(=E2=80=98No. of Accidents=E2=80=99) +
+xlab(=E2=80=98Hour=E2=80=99) +
+ggtitle(=E2=80=98Trend for Collision Manner =E2=80=93 Angle=E2=80=99) +
+theme(plot.title =3D element_text(hjust =3D 0.5, size =3D 11)) +
+guides(fill =3D guide_legend(=E2=80=98Road Function=E2=80=99)) +
+theme(legend.title =3D element_text(size =3D 8),
+legend.position =3D =E2=80=98bottom=E2=80=99,
+legend.key.size =3D unit(0.2,=E2=80=99cm=E2=80=99),
+legend.key.height =3D unit(0.25,=E2=80=99cm=E2=80=99),
+legend.text =3D element_text(size =3D 7))
+=E2=80=9C`
+
+
+For angle collision manner, the highest peak happened between 3:00 ~ 6:00pm e=
+vening rush hour. The second peak between 10:00am to 12:00pm.
+
+
+
+=E2=80=9C`{r graph9, echo=3DFALSE, fig.height=3D4, fig.width=3D7, dev=3D=E2=80=
+=99png=E2=80=99}
+collision_headon <-collision_total %>%
+filter(Collision_manner=3D=3D=E2=80=99Head-On=E2=80=99) %>%
+group_by(Hour, Road_function) %>%
+summarise(Num_collisions =3Dn())
+
+g <-ggplot(collision_headon, aes(x=3DHour, y=3DNum_collisions))
+g + geom_area(aes(fill =3D Road_function)) +
+ylab(=E2=80=98No. of Accidents=E2=80=99) +
+xlab(=E2=80=98Hour=E2=80=99) +
+ggtitle(=E2=80=98Trend for Collision Manner =E2=80=93 Head-On=E2=80=99) +
+theme(plot.title =3D element_text(hjust =3D 0.5, size =3D 11)) +
+guides(fill =3D guide_legend(=E2=80=98Road Function=E2=80=99)) +
+theme(legend.title =3D element_text(size =3D 8),
+legend.position =3D =E2=80=98bottom=E2=80=99,
+legend.key.size =3D unit(0.2,=E2=80=99cm=E2=80=99),
+legend.key.height =3D unit(0.25,=E2=80=99cm=E2=80=99),
+legend.text =3D element_text(size =3D 7))
+=E2=80=9C`
+
+
+The head-on collision manner happened during morning and evening rush hours,=
+ namely between 6:00 to 8:00am, and between 2:00pm to 6:00pm.
+
+
+
+
+
+#### Conclusion
+
+The surprising findings from the analysis are that two thirds of the total f=
+atal vehicle accidents happened in stationary manner under clear weather con=
+dition. During morning and evening rush hours, when the driving conditions a=
+re much more complicated, human beings actually did a much better job naviga=
+ting through the busy traffic. This pattern fits well with self-driving tech=
+nology, which can handle simple, repetitive tasks much more competently and e=
+ffectively than human beings. I would expect the number of vehicle fatal acc=
+idents dramatically reduced with the advent of self-driving technology withi=
+n the next one or two decades.
+
+To leave a comment for the author, please follow the link and comment on the=
+ir blog: R =E2=80=93 NYC Data Science Academy Blog.
+R-bloggers.com offers daily e-mail updates about R news and tutorials on top=
+ics such as: Data science, Big Data, R jobs, visualization (ggplot2, Boxplot=
+s, maps, animation), programming (RStudio, Sweave, LaTeX, SQL, Eclipse, git,=
+ hadoop, Web Scraping) statistics (regression, PCA, time series, trading) an=
+d more...
+----=20
+
+Read in my feedly
+
+--Apple-Mail-0F45C5A5-4AF4-4F41-9DF3-91D5E76889EF
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html;
+	charset=utf-8
+
+<html><head><meta http-equiv=3D"content-type" content=3D"text/html; charset=3D=
+utf-8"></head><body dir=3D"auto"><div>=20
+=20
+=20
+<br>=20
+<br>=20
+---- <br>=20
+<b><a href=3D"https://www.r-bloggers.com/2015-us-fatal-vehicle-accidents-ana=
+lysis/">2015 US Fatal Vehicle Accidents Analysis</a></b><br>=20
+// <b><a href=3D"https://www.r-bloggers.com/2015-us-fatal-vehicle-accidents-=
+analysis/">R-bloggers</a></b><br>=20
+<br>=20
+<p></p><div><div><div><div data-show-faces=3D"false" data-height=3D"21" data=
+-width=3D"100" data-layout=3D"button_count" data-send=3D"true" data-href=3D"=
+https://www.r-bloggers.com/2015-us-fatal-vehicle-accidents-analysis/"></div>=
+</div><div></div></div><div></div></div>
+<div>
+(This article was first published on <strong><a href=3D"https://nycdatascien=
+ce.com/blog/r/2015-us-fatal-vehicle-accidents-analysis/"> R =E2=80=93 NYC Da=
+ta Science Academy Blog</a></strong>, and kindly contributed to <a rel=3D"no=
+follow" href=3D"https://www.r-bloggers.com/">R-bloggers)</a> </div>
+<p>=E2=80=94<br>
+title: =E2=80=9C2015 US Fatal Vehicle Accidents Analysis=E2=80=9D<br>
+author: =E2=80=9CMatthew Sun=E2=80=9D<br>
+date: =E2=80=9C2/01/2018=E2=80=9D<br>
+output:<br>
+html_document: default<br>
+=E2=80=94</p>
+<p><br><br>
+<br></p>
+<p>#### Introduction</p>
+<p>&nbsp;</p>
+<p>There are over 5 millions of vehicle accidents reported in the US in 2015=
+, according to data from National Highway Traffic Safety Administration (NHT=
+SA). About 7% of them are fatal accidents. As the new technology of artifici=
+al intelligence going to mature in the next one or two decades, self-driving=
+ vehicles will become part of a normal life in human society. I am just wond=
+ering how this new technology can help reduce the car accidents on the road.=
+</p>
+<p><br><br>
+<br></p>
+<p>#### Data Overview</p>
+<p>&nbsp;</p>
+<p>There is a dataset on the NHTSA website for 2015 fatal accident: <a href=3D=
+"http://ftp.nhtsa.dot.gov">ftp.nhtsa.dot.gov</a>. It reports the fatal incid=
+ents in major US cities, counties and states. It also includes the longitude=
+ and latitude of the accidents so the data can be visualized on the map. The=
+ state, county and city are recorded in FIPS codes. After proper data cleani=
+ng and re-arrangement, the following data fields are used in the analysis.</=
+p>
+<p>* State<br>
+* Population<br>
+* County<br>
+* City<br>
+* Longitude<br>
+* Latitude<br>
+* Month<br>
+* Day<br>
+* Hour<br>
+* Time of Day<br>
+* Day Week<br>
+* Day of Week<br>
+* Collision Manner<br>
+* Road Function<br>
+* Interstate<br>
+* Junction<br>
+* Trafficway<br>
+* Vehicles Involved<br>
+* Drunken<br>
+* Road Departure<br>
+* Weather</p>
+<p><br><br>
+<br></p>
+<p>#### Geographical Analysis</p>
+<p>&nbsp;</p>
+<p>Each fatal accident can be represented on the US geographical map as a bl=
+ue circle dot, by its longitude and latitude number. By slicing the data acc=
+ording to the combination of chosen state, including all states as an option=
+, the fatal accidents can be visually inspected on US map in each state. The=
+ data can also be sliced by a timeframe of continuous number of hours rangin=
+g from one to 24. All the vehicle accident volumes on the map are aggregated=
+ into annual summation. The volume of the accidents can be differentiated by=
+ the intensity of blue color in each dot. By hovering the mouse over each do=
+t, it will show a pop up message with the county name, a total number of veh=
+icle accidents within the chosen timeframe and the state name.</p>
+<p><br><br>
+=E2=80=9C`{r map, message=3DFALSE, include=3DFALSE}<br>
+knitr::opts_chunk$set(eval =3D TRUE, echo=3DTRUE)<br>
+library(dplyr)<br>
+library(data.table)<br>
+library(geojsonio)<br>
+library(leaflet)<br>
+library(shiny)<br>
+library(ggplot2)<br>
+setwd(=E2=80=98~/NYC_data_science/projects/=E2=80=99)<br>
+accidents &lt;-fread(file =3D =E2=80=98./project1/vehicle_accidents.csv=E2=80=
+=99)<br>
+collision_total &lt;-accidents %&gt;% filter(Hour &lt; 24) %&gt;%<br>
+select(Hour, Collision_manner, Road_function)</p>
+<p>hour_range &lt;-seq(from =3D 0, to =3D 1)<br>
+state_range &lt;-c(=E2=80=98California=E2=80=99, =E2=80=98New York=E2=80=99)=
+<br>
+accidents_selection &lt;-accidents %&gt;% filter(State %in% state_range &amp=
+; Hour %in% hour_range) %&gt;%<br>
+select(State, State_ab, Longitude, Latitude, County, Hour, N_state, N_nation=
+,<br>
+Density_state, Density_nation) %&gt;% group_by(State) %&gt;%<br>
+mutate(N_hour_state =3D length(State), Ratio_state =3D N_hour_state/N_state)=
+ %&gt;%<br>
+ungroup()</p>
+<p>accidents_temp &lt;-accidents_selection %&gt;% select(State, N_hour_state=
+, N_nation) %&gt;%<br>
+distinct() %&gt;% mutate(N_hour_nation =3D sum(N_hour_state),<br>
+Ratio_nation =3D N_hour_nation/N_nation) %&gt;%<br>
+select(-N_nation, -N_hour_state)<br>
+accidents_selection &lt;-accidents_selection %&gt;% left_join(., accidents_t=
+emp, by =3D =E2=80=98State=E2=80=99) %&gt;%<br>
+group_by(State) %&gt;% arrange(desc(N_hour_state))</p>
+<p>states &lt;-geojson_read(=E2=80=98./project1/us_population_density.json=E2=
+=80=99, what =3D =E2=80=9Csp=E2=80=9D)<br>
+bins &lt;-c(0, 10, 20, 50, 100, 200, 500, 1000, Inf)<br>
+pal &lt;-colorBin(=E2=80=9CYlOrRd=E2=80=9D, domain =3D states$density, bins =3D=
+ bins)</p>
+<p>leaflet(data =3D states) %&gt;% addProviderTiles(=E2=80=9CEsri.WorldStree=
+tMap=E2=80=9D) %&gt;%<br>
+setView(lng =3D -93.85, lat =3D 37.45, zoom =3D 4) %&gt;%<br>
+clearMarkers() %&gt;%<br>
+clearShapes() %&gt;%<br>
+addPolygons(<br>
+fillColor =3D ~pal(density),<br>
+weight =3D 2,<br>
+opacity =3D 1,<br>
+color =3D =E2=80=9Cwhite=E2=80=9D,<br>
+dashArray =3D =E2=80=9C3=E2=80=9D,<br>
+fillOpacity =3D 0.5) %&gt;%<br>
+addCircleMarkers(data =3D accidents_selection, ~Longitude, ~Latitude, radius=
+ =3D 2,<br>
+stroke =3D F, fillOpacity =3D 1, fillColor =3D =E2=80=98blue=E2=80=99,<br>
+label =3D paste0(=E2=80=98County: =E2=80=98, accidents_selection$County,<br>=
+
+=E2=80=98: =E2=80=98, accidents_selection$N_state))<br>
+=E2=80=9C`<br>
+<br></p>
+<p>Since the population of each state varies, the pure volume comparison is o=
+nly one side of the story. The US basemap is at the same time, plotted as ch=
+oropleth map according to the 2012 population density of each state.</p>
+<p><br><br>
+=E2=80=9C`{r graph2, echo=3DFALSE, fig.height=3D5, fig.width=3D8, dev=3D=E2=80=
+=99png=E2=80=99}<br>
+qty_vs_density &lt;-accidents %&gt;%<br>
+select(State, N_state, Density_state, Density_nation) %&gt;%<br>
+group_by(State) %&gt;% distinct() %&gt;% arrange(desc(N_state))</p>
+<p>g &lt;-ggplot(qty_vs_density, aes(x=3Dfactor(State, levels =3D unique(Sta=
+te)), y=3DN_state+Density_state))<br>
+g + geom_col(aes(fill=3DState)) + guides(fill=3DF) +<br>
+theme(axis.text.x =3D element_text(angle =3D 50, hjust =3D 1, size =3D 6.5))=
+ +<br>
+ylab(=E2=80=98No. of Accidents=E2=80=99) +<br>
+xlab(=E2=80=98US States=E2=80=99) +<br>
+ggtitle(=E2=80=98US Fatal Accidents Distribution =E2=80=93 Quantity vs Densi=
+ty=E2=80=99) +<br>
+theme(plot.title =3D element_text(hjust =3D 0.5)) +<br>
+geom_col(aes(x=3Dfactor(State, levels =3D unique(State)),y=3DDensity_state),=
+<br>
+fill =3D =E2=80=98black=E2=80=99, alpha =3D 0.9, size =3D 0.25) +<br>
+geom_hline(aes(yintercept =3DDensity_nation),<br>
+linetype =3D =E2=80=98solid=E2=80=99, color =3D =E2=80=98red=E2=80=99, size =3D=
+ 0.5) +<br>
+annotate(=E2=80=98text=E2=80=99, x=3D=E2=80=99Vermont=E2=80=99, y =3D 480, l=
+abel =3D =E2=80=98National Density\nLine (pp3m) =E2=80=93 Red=E2=80=99,<br>
+size =3D 2.4, color =3D =E2=80=98red=E2=80=99)<br>
+=E2=80=9C`<br>
+<br></p>
+<p>The bar chart visualizes the fatal vehicle accidents volume against the a=
+ccident density, which is normalized by the population of each state. Since t=
+he density number is extremely low, I used parts per 3 million for visualiza=
+tion comparison. The density of each state is plotted as black color, agains=
+t a red line, which is national average density number.</p>
+<p>=46rom the bar chart, only South Carolina and Mississippi present both re=
+lative high volume and high density. The remaining majority of high volume s=
+tates either align with or lower than the national average, after normalized=
+ with the population.</p>
+<p><br><br>
+<br></p>
+<p>#### Cause Analysis</p>
+<p>&nbsp;</p>
+<p>These three charts demonstrate the three major reasons that have caused t=
+he fatal accidents.</p>
+<p><br><br>
+=E2=80=9C`{r graph4, echo=3DFALSE, fig.height=3D4, fig.width=3D7, dev=3D=E2=80=
+=99png=E2=80=99}<br>
+collision_rdeparture &lt;-accidents %&gt;% group_by(Collision_manner, Road_d=
+eparture) %&gt;%<br>
+summarise(Num_collisions =3D n()) %&gt;% group_by(Collision_manner) %&gt;%<b=
+r>
+mutate(Total =3D sum(Num_collisions)) %&gt;%<br>
+arrange(Total, Num_collisions)</p>
+<p>g &lt;-ggplot(collision_rdeparture, aes(x =3D factor(Collision_manner,<br=
+>
+levels =3D unique(Collision_manner)), y =3D Num_collisions))<br>
+g + geom_bar(aes(fill =3D Road_departure), stat =3D =E2=80=98identity=E2=80=99=
+, position =3D =E2=80=98dodge=E2=80=99) +<br>
+theme(axis.text.x =3D element_text(angle =3D 50, hjust =3D 1, size =3D 8.5))=
+ +<br>
+ylab(=E2=80=98No. of Accidents=E2=80=99) +<br>
+xlab(=E2=80=98Collision Manner=E2=80=99) +<br>
+ggtitle(=E2=80=98Impact of Road Departure on Fatal Accidents=E2=80=99) +<br>=
+
+theme(plot.title =3D element_text(hjust =3D 0.5, size =3D 11)) +<br>
+guides(fill =3D guide_legend(=E2=80=98Road Departure=E2=80=99)) +<br>
+theme(legend.title =3D element_text(size =3D 8),<br>
+legend.position =3D =E2=80=98bottom=E2=80=99,<br>
+legend.key.size =3D unit(0.2,=E2=80=99cm=E2=80=99),<br>
+legend.text =3D element_text(size =3D 7))<br>
+=E2=80=9C`<br>
+<br></p>
+<p>&nbsp;</p>
+<p>Road Departure away from the road is the major contributor towards the st=
+ationary collision and Head-on collision.</p>
+<p><br></p>
+<p>=E2=80=9C`{r graph5, echo=3DFALSE, fig.height=3D4, fig.width=3D7, dev=3D=E2=
+=80=99png=E2=80=99}</p>
+<p>collision_drunken &lt;-accidents %&gt;% group_by(Collision_manner, Drunke=
+n) %&gt;%<br>
+summarise(Num_collisions =3D n()) %&gt;% group_by(Collision_manner) %&gt;%<b=
+r>
+mutate(Total =3D sum(Num_collisions)) %&gt;%<br>
+arrange(Total, Num_collisions)</p>
+<p>g &lt;-ggplot(collision_drunken, aes(x =3D factor(Collision_manner,<br>
+levels =3D unique(Collision_manner)), y =3D Num_collisions))<br>
+g + geom_bar(aes(fill =3D Drunken), stat =3D =E2=80=98identity=E2=80=99, pos=
+ition =3D =E2=80=98dodge=E2=80=99) +<br>
+theme(axis.text.x =3D element_text(angle =3D 50, hjust =3D 1, size =3D 8.5))=
+ +<br>
+ylab(=E2=80=98No. of Accidents=E2=80=99) +<br>
+xlab(=E2=80=98Collision Manner=E2=80=99) +<br>
+ggtitle(=E2=80=98Impact of Drunken on Fatal Accidents=E2=80=99) +<br>
+theme(plot.title =3D element_text(hjust =3D 0.5, size =3D 11)) +<br>
+guides(fill =3D guide_legend(=E2=80=98Drunken =E2=80=93 BAC=E2=80=99)) +<br>=
+
+theme(legend.title =3D element_text(size =3D 8),<br>
+legend.position =3D =E2=80=98bottom=E2=80=99,<br>
+legend.key.size =3D unit(0.2,=E2=80=99cm=E2=80=99),<br>
+legend.text =3D element_text(size =3D 7))<br>
+=E2=80=9C`</p>
+<p><br></p>
+<p>Drunken represented only 25% of stationary collision.</p>
+<p><br></p>
+<p>=E2=80=9C`{r graph6, echo=3DFALSE, fig.height=3D4, fig.width=3D7, dev=3D=E2=
+=80=99png=E2=80=99}<br>
+collision_weather &lt;-accidents %&gt;% group_by(Weather, Collision_manner) %=
+&gt;%<br>
+summarise(Num_collisions =3D n()) %&gt;% group_by(Weather) %&gt;%<br>
+mutate(Total =3D sum(Num_collisions)) %&gt;%<br>
+arrange(Total, Num_collisions)</p>
+<p>top_5_weather &lt;-accidents %&gt;% select(Weather, Collision_manner) %&g=
+t;%<br>
+group_by(Weather) %&gt;% summarise(Num_collisions =3D n()) %&gt;%<br>
+distinct() %&gt;% top_n(5, wt =3D Num_collisions)</p>
+<p>collision_weather &lt;-collision_weather %&gt;% filter(Weather %in% top_5=
+_weather$Weather)</p>
+<p>g &lt;-ggplot(collision_weather, aes(x =3D factor(Weather,<br>
+levels =3D unique(Weather)), y =3D Num_collisions))<br>
+g + geom_bar(aes(fill =3D Collision_manner), stat =3D =E2=80=98identity=E2=80=
+=99, position =3D =E2=80=98dodge=E2=80=99) +<br>
+theme(axis.text.x =3D element_text(angle =3D 50, hjust =3D 1, size =3D 8.5))=
+ +<br>
+ylab(=E2=80=98No. of Accidents=E2=80=99) +<br>
+xlab(=E2=80=98Weather=E2=80=99) +<br>
+ggtitle(=E2=80=98Impact of Weather on Fatal Accidents =E2=80=93 Top 5=E2=80=99=
+) +<br>
+theme(plot.title =3D element_text(hjust =3D 0.5, size =3D 11)) +<br>
+guides(fill =3D guide_legend(=E2=80=98Collision Manner=E2=80=99)) +<br>
+theme(legend.title =3D element_text(size =3D 8),<br>
+legend.position =3D =E2=80=98bottom=E2=80=99,<br>
+legend.key.size =3D unit(0.2,=E2=80=99cm=E2=80=99),<br>
+legend.key.height =3D unit(0.25,=E2=80=99cm=E2=80=99),<br>
+legend.text =3D element_text(size =3D 7))<br>
+=E2=80=9C`<br>
+<br></p>
+<p>Surprisingly, the highest number of vehicle accidents, about two thirds o=
+f them are under clear weather condition, and one of the involving vehicles w=
+as in stationary position. Definitely weather is not the major reason why ac=
+cidents happened.</p>
+<p><br><br>
+<br></p>
+<p>#### Trend Analysis</p>
+<p>&nbsp;</p>
+<p>The collision manner time distribution by the hour clearly shows the top t=
+hree collision manner, which is stationary, angle and head-on. I will invest=
+igate these three categories in more details.</p>
+<p><br><br>
+=E2=80=9C`{r graph3, echo=3DFALSE, fig.height=3D4, fig.width=3D7, dev=3D=E2=80=
+=99png=E2=80=99}<br>
+collision_qty &lt;-collision_total %&gt;%<br>
+group_by(Hour,Collision_manner) %&gt;% summarise(Num_collisions =3Dn())</p>
+<p>g &lt;-ggplot(collision_qty, aes(x=3DHour, y=3DNum_collisions))<br>
+g + geom_area(aes(fill =3D Collision_manner)) +<br>
+ylab(=E2=80=98No. of Accidents=E2=80=99) +<br>
+xlab(=E2=80=98Hour=E2=80=99) +<br>
+ggtitle(=E2=80=98Collision Manner Time Distribution by Hour=E2=80=99) +<br>
+theme(plot.title =3D element_text(hjust =3D 0.5, size =3D 13)) +<br>
+guides(fill =3D guide_legend(=E2=80=98Collision Manner=E2=80=99)) +<br>
+theme(legend.title =3D element_text(size =3D 9),<br>
+legend.position =3D =E2=80=98bottom=E2=80=99,<br>
+legend.key.size =3D unit(0.3,=E2=80=99cm=E2=80=99),<br>
+legend.key.height =3D unit(0.35,=E2=80=99cm=E2=80=99),<br>
+legend.text =3D element_text(size =3D 8))<br>
+=E2=80=9C`</p>
+<p><br></p>
+<p>The next three area maps plot how each collision manner volume varies wit=
+h the time during the day.</p>
+<p><br><br>
+=E2=80=9C`{r graph7, echo=3DFALSE, fig.height=3D4, fig.width=3D7, dev=3D=E2=80=
+=99png=E2=80=99}<br>
+collision_station &lt;-collision_total %&gt;%<br>
+filter(Collision_manner=3D=3D=E2=80=99Stationary collision=E2=80=99) %&gt;%<=
+br>
+group_by(Hour, Road_function) %&gt;%<br>
+summarise(Num_collisions =3Dn())</p>
+<p>g &lt;-ggplot(collision_station, aes(x=3DHour, y=3DNum_collisions))<br>
+g + geom_area(aes(fill =3D Road_function)) +<br>
+ylab(=E2=80=98No. of Accidents=E2=80=99) +<br>
+xlab(=E2=80=98Hour=E2=80=99) +<br>
+ggtitle(=E2=80=98Trend for Collision Manner =E2=80=93 Stationary Collision=E2=
+=80=99) +<br>
+theme(plot.title =3D element_text(hjust =3D 0.5, size =3D 11)) +<br>
+guides(fill =3D guide_legend(=E2=80=98Road Function=E2=80=99)) +<br>
+theme(legend.title =3D element_text(size =3D 8),<br>
+legend.position =3D =E2=80=98bottom=E2=80=99,<br>
+legend.key.size =3D unit(0.2,=E2=80=99cm=E2=80=99),<br>
+legend.key.height =3D unit(0.25,=E2=80=99cm=E2=80=99),<br>
+legend.text =3D element_text(size =3D 7))<br>
+=E2=80=9C`<br>
+<br></p>
+<p>For stationary collision, the peak happened around 8:00 to 9:00pm. The se=
+cond peak happened at midnight.</p>
+<p><br><br>
+=E2=80=9C`{r graph8, echo=3DFALSE, fig.height=3D4, fig.width=3D7, dev=3D=E2=80=
+=99png=E2=80=99}<br>
+collision_angle &lt;-collision_total %&gt;%<br>
+filter(Collision_manner=3D=3D=E2=80=99Angle=E2=80=99) %&gt;%<br>
+group_by(Hour, Road_function) %&gt;%<br>
+summarise(Num_collisions =3Dn())</p>
+<p>g &lt;-ggplot(collision_angle, aes(x=3DHour, y=3DNum_collisions))<br>
+g + geom_area(aes(fill =3D Road_function)) +<br>
+ylab(=E2=80=98No. of Accidents=E2=80=99) +<br>
+xlab(=E2=80=98Hour=E2=80=99) +<br>
+ggtitle(=E2=80=98Trend for Collision Manner =E2=80=93 Angle=E2=80=99) +<br>
+theme(plot.title =3D element_text(hjust =3D 0.5, size =3D 11)) +<br>
+guides(fill =3D guide_legend(=E2=80=98Road Function=E2=80=99)) +<br>
+theme(legend.title =3D element_text(size =3D 8),<br>
+legend.position =3D =E2=80=98bottom=E2=80=99,<br>
+legend.key.size =3D unit(0.2,=E2=80=99cm=E2=80=99),<br>
+legend.key.height =3D unit(0.25,=E2=80=99cm=E2=80=99),<br>
+legend.text =3D element_text(size =3D 7))<br>
+=E2=80=9C`<br>
+<br></p>
+<p>For angle collision manner, the highest peak happened between 3:00 ~ 6:00=
+pm evening rush hour. The second peak between 10:00am to 12:00pm.</p>
+<p><br><br>
+=E2=80=9C`{r graph9, echo=3DFALSE, fig.height=3D4, fig.width=3D7, dev=3D=E2=80=
+=99png=E2=80=99}<br>
+collision_headon &lt;-collision_total %&gt;%<br>
+filter(Collision_manner=3D=3D=E2=80=99Head-On=E2=80=99) %&gt;%<br>
+group_by(Hour, Road_function) %&gt;%<br>
+summarise(Num_collisions =3Dn())</p>
+<p>g &lt;-ggplot(collision_headon, aes(x=3DHour, y=3DNum_collisions))<br>
+g + geom_area(aes(fill =3D Road_function)) +<br>
+ylab(=E2=80=98No. of Accidents=E2=80=99) +<br>
+xlab(=E2=80=98Hour=E2=80=99) +<br>
+ggtitle(=E2=80=98Trend for Collision Manner =E2=80=93 Head-On=E2=80=99) +<br=
+>
+theme(plot.title =3D element_text(hjust =3D 0.5, size =3D 11)) +<br>
+guides(fill =3D guide_legend(=E2=80=98Road Function=E2=80=99)) +<br>
+theme(legend.title =3D element_text(size =3D 8),<br>
+legend.position =3D =E2=80=98bottom=E2=80=99,<br>
+legend.key.size =3D unit(0.2,=E2=80=99cm=E2=80=99),<br>
+legend.key.height =3D unit(0.25,=E2=80=99cm=E2=80=99),<br>
+legend.text =3D element_text(size =3D 7))<br>
+=E2=80=9C`<br>
+<br></p>
+<p>The head-on collision manner happened during morning and evening rush hou=
+rs, namely between 6:00 to 8:00am, and between 2:00pm to 6:00pm.</p>
+<p><br><br>
+<br></p>
+<p>#### Conclusion</p>
+<p>The surprising findings from the analysis are that two thirds of the tota=
+l fatal vehicle accidents happened in stationary manner under clear weather c=
+ondition. During morning and evening rush hours, when the driving conditions=
+ are much more complicated, human beings actually did a much better job navi=
+gating through the busy traffic. This pattern fits well with self-driving te=
+chnology, which can handle simple, repetitive tasks much more competently an=
+d effectively than human beings. I would expect the number of vehicle fatal a=
+ccidents dramatically reduced with the advent of self-driving technology wit=
+hin the next one or two decades.</p>
+	<p>
+</p><div>
+<div>To <strong>leave a comment</strong> for the author, please follow the l=
+ink and comment on their blog: <strong><a href=3D"https://nycdatascience.com=
+/blog/r/2015-us-fatal-vehicle-accidents-analysis/"> R =E2=80=93 NYC Data Sci=
+ence Academy Blog</a></strong>.</div>
+<hr>
+<a rel=3D"nofollow" href=3D"https://www.r-bloggers.com/">R-bloggers.com</a> o=
+ffers <strong><a rel=3D"nofollow" href=3D"https://feedburner.google.com/fb/a=
+/mailverify?uri=3DRBloggers">daily e-mail updates</a></strong> about <a rel=3D=
+"nofollow" href=3D"https://www.r-project.org/" title=3D"The R Project for St=
+atistical Computing">R</a> news and <a rel=3D"nofollow" href=3D"https://www.=
+r-bloggers.com/search/tutorial" title=3D"R tutorials">tutorials</a> on topic=
+s such as: <a rel=3D"nofollow" href=3D"https://www.r-bloggers.com/search/dat=
+a%20science" title=3D"Data science">Data science</a>, <a rel=3D"nofollow" hr=
+ef=3D"https://www.r-bloggers.com/search/Big%20Data" title=3D"Big Data">Big D=
+ata, </a><a rel=3D"nofollow" href=3D"https://www.r-users.com/" title=3D"R jo=
+bs">R jobs</a>, visualization (<a rel=3D"nofollow" href=3D"https://www.r-blo=
+ggers.com/search/ggplot2" title=3D"ggplot and ggplot2 tutorials">ggplot2</a>=
+, <a rel=3D"nofollow" href=3D"https://www.r-bloggers.com/search/boxplot" tit=
+le=3D"Boxplots using lattice and ggplot2 tutorials">Boxplots</a>, <a rel=3D"=
+nofollow" href=3D"https://www.r-bloggers.com/search/map" title=3D"Maps and g=
+is">maps</a>, <a rel=3D"nofollow" href=3D"https://www.r-bloggers.com/search/=
+animation" title=3D"Animation in R">animation</a>), programming (<a rel=3D"n=
+ofollow" href=3D"https://www.r-bloggers.com/search/RStudio" title=3D"RStudio=
+ IDE for R">RStudio</a>, <a rel=3D"nofollow" href=3D"https://www.r-bloggers.=
+com/search/sweave" title=3D"Sweave and literate programming">Sweave</a>, <a r=
+el=3D"nofollow" href=3D"https://www.r-bloggers.com/search/LaTeX" title=3D"La=
+TeX in R">LaTeX</a>, <a rel=3D"nofollow" href=3D"https://www.r-bloggers.com/=
+search/SQL" title=3D"SQL and databases">SQL</a>, <a rel=3D"nofollow" href=3D=
+"https://www.r-bloggers.com/search/eclipse" title=3D"Eclipse IDE for R">Ecli=
+pse</a>, <a rel=3D"nofollow" href=3D"https://www.r-bloggers.com/search/git" t=
+itle=3D"git and github, Version Control System">git</a>, <a rel=3D"nofollow"=
+ href=3D"https://www.r-bloggers.com/search/hadoop" title=3D"Large data in R u=
+sing Hadoop">hadoop</a>, <a rel=3D"nofollow" href=3D"https://www.r-bloggers.=
+com/search/Web+Scraping" title=3D"Web Scraping of google, facebook, yahoo, t=
+witter and more using R">Web Scraping</a>) statistics (<a rel=3D"nofollow" h=
+ref=3D"https://www.r-bloggers.com/search/regression" title=3D"Regressions an=
+d ANOVA analysis tutorials">regression</a>, <a rel=3D"nofollow" href=3D"http=
+s://www.r-bloggers.com/search/PCA" title=3D"principal component analysis tut=
+orial">PCA</a>, <a rel=3D"nofollow" href=3D"https://www.r-bloggers.com/searc=
+h/time+series" title=3D"Time series">time series</a>, <a rel=3D"nofollow" hr=
+ef=3D"https://www.r-bloggers.com/search/trading" title=3D"finance trading">t=
+rading</a>) and more...
+<!-- incorrect visual --></div>=20
+<br>=20
+---- <br><br>=20
+Read in <b><a href=3D"https://feedly.com">my feedly</a></b>=20
+=20
+</div><div></div></body></html>=
+
+--Apple-Mail-0F45C5A5-4AF4-4F41-9DF3-91D5E76889EF--

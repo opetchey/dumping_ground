@@ -1,0 +1,34 @@
+---
+title: 'Dataset: Fire, elephants and geckos'
+author: "Owen Petchey"
+date: "2/21/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## The publication
+
+From the paper *Synergistic effects of fire and elephants on arboreal animals in an African savanna* by Pringle et al, 2015, in Journal of Animal Ecology [paper on JAE website](http://onlinelibrary.wiley.com/doi/10.1111/1365-2656.12404/full).
+
+## Getting the raw data
+
+[The dataset is available in an Excel file from Dryad.](https://datadryad.org/resource/doi:10.5061/dryad.bt21d). This excel file (named `Patch-scale summary data.xlsx`) contains one worksheet with data.
+
+## Some initial processing
+
+The worksheet was saved as a csv file `fire_elephants_geckos_Pringle_etal_2015_raw.csv`.
+
+
+
+## Location on github
+
+```{r}
+library(readr)
+dd <- read_csv("https://raw.githubusercontent.com/opetchey/insights_public_resources/master/datasets/fire_elephants_geckos_Pringle_etal_2015_raw.csv?token=ADEO-h14zV9QPHlrLFGhGQUWZ4yxoO3Iks5amF9XwA%3D%3D")
+dd
+```
+

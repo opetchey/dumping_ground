@@ -1,0 +1,40 @@
+---
+title: 'Dataset: Telemonitoring Parkinsons'
+author: "Owen Petchey"
+date: "2/21/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## The publication
+
+From the paper *Accurate Telemonitoring of Parkinson's Disease Progression by Noninvasive Speech Tests* by Tsanas et al, 2010, in IEEE Transactions on Biomedical Engineering [paper on journal website website](http://ieeexplore.ieee.org/document/5339170).
+
+A second associated paper provides details about the biomedical voice measures: *Suitability of dysphonia measurements for telemonitoring of Parkinson's disease* by Little et al, 2008, in IEEE Transactions on Biomedical Engineering [paper on journal website website](http://ieeexplore.ieee.org/document/4636708).
+
+
+## Getting the raw data
+
+[The dataset is available in an Excel file from Dryad.](https://datadryad.org/resource/doi:10.5061/dryad.82/1). This excel file (named `PriceGittleman_2007_append.xls`) contains one worksheet with data.
+
+## Some initial processing
+
+The dataset is available from the UCI Machine Learning Repository as a text file [link to web page](https://archive.ics.uci.edu/ml/datasets/Parkinsons+Telemonitoring). This text file from this web page was saved as a csv file. The web page also has a link to metadata.
+
+## Location on github
+
+Here the csv with single header row -- `Telemonitoring_Parkinsons_Tsanas_etal_2010.csv`
+
+```{r}
+library(readr)
+dd <- read_csv("https://raw.githubusercontent.com/opetchey/insights_public_resources/master/datasets/Telemonitoring_Parkinsons_Tsanas_etal_2010.csv?token=ADEO-k4h45yw9Yk-5IHd9khhCvJ3ggOTks5aqDCnwA%3D%3D")
+dd
+```
+
+## Notes
+
+An interesting dataset since the response variable is a time series that is linearly interpolated from three data points. It looks like some of the stats don't account well for this, or that there are quite few individuals (e.g. end of first paragraph of Discusssion: "It is true that the nearly 6000 samples come from 42 patients, which could lead to some dependence between the samples." Probably one should look at within individual correlations, standardising for variation among individuals -- since the question is about monitoring of individuals, and not predicting across individuals. Though here, clarity of question is really important.
+

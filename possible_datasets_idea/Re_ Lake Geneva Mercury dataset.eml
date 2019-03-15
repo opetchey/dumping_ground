@@ -1,0 +1,110 @@
+Received: from idmx05.uzh.ch ([130.60.205.108])
+          by idlmail04.uzh.ch (IBM Domino Release 9.0.1FP9HF400)
+          with ESMTP id 2018030917285461-454156 ;
+          Fri, 9 Mar 2018 17:28:54 +0100 
+Received: from idsmtp01.uzh.ch ([130.60.206.120]:43623)
+	by idmx05.uzh.ch with esmtps (TLS1.2:DHE_RSA_AES_128_CBC_SHA1:128)
+	(Exim 4.82)
+	(envelope-from <reinhard.furrer@math.uzh.ch>)
+	id 1euKsw-0003It-49
+	for owen.petchey@ieu.uzh.ch; Fri, 09 Mar 2018 17:28:54 +0100
+Received: from steiner.math.uzh.ch ([130.60.188.31] helo=mail.math.uzh.ch)
+	by idsmtp01.uzh.ch with esmtps (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+	(Exim 4.82)
+	(envelope-from <reinhard.furrer@math.uzh.ch>)
+	id 1euKsv-0004Dm-R9
+	for owen.petchey@ieu.uzh.ch; Fri, 09 Mar 2018 17:28:45 +0100
+Received: from localhost (localhost [127.0.0.1])
+	by mail.math.uzh.ch (Postfix) with ESMTP id 926AD2B80DD1
+	for <owen.petchey@ieu.uzh.ch>; Fri,  9 Mar 2018 17:28:45 +0100 (CET)
+Received: from mail.math.uzh.ch ([127.0.0.1])
+	by localhost (mail.math.uzh.ch [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id Tvjw6zR1Cs7E for <owen.petchey@ieu.uzh.ch>;
+	Fri,  9 Mar 2018 17:28:39 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.math.uzh.ch (Postfix) with ESMTP id EAC132B80EE8
+	for <owen.petchey@ieu.uzh.ch>; Fri,  9 Mar 2018 17:28:38 +0100 (CET)
+Received: from mail.math.uzh.ch ([127.0.0.1])
+	by localhost (mail.math.uzh.ch [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id LQ-LoDRCezaV for <owen.petchey@ieu.uzh.ch>;
+	Fri,  9 Mar 2018 17:28:38 +0100 (CET)
+Received: from tl14.math.uzh.ch (ptl14.math.uzh.ch [130.60.188.214])
+	by mail.math.uzh.ch (Postfix) with ESMTP id 6CA8E2B80DD1
+	for <owen.petchey@ieu.uzh.ch>; Fri,  9 Mar 2018 17:28:38 +0100 (CET)
+Received: from [IPv6:::1] (localhost [IPv6:::1])
+	by tl14.math.uzh.ch (Postfix) with ESMTP id 4AF412C0759
+	for <owen.petchey@ieu.uzh.ch>; Fri,  9 Mar 2018 17:28:38 +0100 (CET)
+Subject: Re: Lake Geneva Mercury dataset
+To: Owen Petchey <owen.petchey@ieu.uzh.ch>
+From: Reinhard Furrer <reinhard.furrer@math.uzh.ch>
+Message-ID: <7f4e776f-d93b-5256-aea2-94703cee1af8@math.uzh.ch>
+Date: Fri, 9 Mar 2018 17:28:38 +0100
+In-Reply-To: <A615D832-0292-4CA9-888D-34B9A6FD2E39@ieu.uzh.ch>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+X-Virus-Scanned: amavisd-new at mail.math.uzh.ch
+References: <A615D832-0292-4CA9-888D-34B9A6FD2E39@ieu.uzh.ch>
+Organization: MATH University Zurich
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.6.0
+MIME-Version: 1.0
+X-MIMETrack: Itemize by SMTP Server on idlmail04/Server/UZH(Release 9.0.1FP9HF400 |
+ February 15, 2018) at 03/09/2018 05:28:54 PM
+X-TNEFEvaluated: 1
+
+dear owen
+
+we used the data in
+
+
+Furrer, R. and Genton, M. G. (1999). Robust Spatial Data Analysis of=20
+Lake Geneva Sediments with S+SpatialStats. Systems Research and=20
+Information Science, Special Issue on Spatial Data: Neural=20
+Nets/Statistics, 8(4), 257-272.
+
+received it directly from a collaborator. the data is available in=20
+slightly rounded values from
+
+http://www.cipel.org/en/documentation_en/scientific-reports/
+
+p.ex.
+
+http://www.cipel.org/wp-content/uploads/2012/07/Camp88_10_Etude-generale-=
+pollution-par-metaux.pdf
+
+
+[.....]
+
++41 (0)58 460 46 69, 17:20
+
+[.....]
+
+i have just called them and it is ok if we publish the data, we have to=20
+mention that they are from CIPEL, link to www.cipel.org is sufficient.
+
+
+
+best
+r
+
+
+
+
+On 03/06/2018 08:10 PM, Owen Petchey wrote:
+> Hello Reinhard
+>=20
+> Is the lake Geneva mercury dataset that you use sometimes available pub=
+licly? If so where. I=E2=80=99m putting together a set of nice datasets, =
+though want to use only publicly available ones if possible (mostly for c=
+larity of provenance).
+>=20
+> All the best
+> Owen
+>=20
+
+--=20
+______________________________________________________________________
+University of Zurich                mailto:reinhard.furrer@math.uzh.ch
+Institute of Mathematics                http://www.math.uzh.ch/furrer/
+CH-8057 Zurich                       Tel/Fax: +41-(0)44-63-55843/55705

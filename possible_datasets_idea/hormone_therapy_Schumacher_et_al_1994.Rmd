@@ -1,0 +1,46 @@
+---
+title: 'Dataset: Hormone therapy'
+author: "Owen Petchey"
+date: "2/21/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## The publication
+
+Full information about this dataset from the package it comes from by Thorsten Hothorn:
+
+```{r, eval=FALSE}
+library(TH.data)
+help(GBSG2)
+```
+
+
+## Getting the raw data
+
+See above.
+
+## Some initial processing
+
+The data worksheet was saved as a csv file `hormone_therapy_Schumacher_et_al_1994_raw.csv`.
+
+```{r, eval=FALSE}
+data("GBSG2", package = "TH.data")
+str(GBSG2)
+write_csv(GBSG2, "~/Desktop/hormone_therapy_Schumacher_et_al_1994_raw.csv")
+```
+
+
+## Location on github
+
+
+```{r}
+library(readr)
+dd <- read_csv("")
+dd
+```
+
