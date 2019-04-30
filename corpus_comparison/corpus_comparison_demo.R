@@ -18,23 +18,23 @@ focal_corpus <- readFiles("data/focal_corpus_from_WoS.bib") %>%
   mutate(TC=as.numeric(TC),
          Corpus="URPPGCB",
          AUx=gsub(";","",AU),
-         num_authors=nchar(AU) - nchar(AUx))
+         num_authors=nchar(AU) - nchar(AUx) + 1)
 
 D1 <- readFiles("data/ref-corpus1.bib") %>%
   isibib2df()
 D2 <- readFiles("data/ref-corpus2.bib") %>%
   isibib2df()
-D3 <- readFiles("data/ref-corpus2.bib") %>%
+D3 <- readFiles("data/ref-corpus3.bib") %>%
   isibib2df()
-D4 <- readFiles("data/ref-corpus2.bib") %>%
+D4 <- readFiles("data/ref-corpus4.bib") %>%
   isibib2df()
-D5 <- readFiles("data/ref-corpus2.bib") %>%
+D5 <- readFiles("data/ref-corpus5.bib") %>%
   isibib2df()
 reference_corpus <- rbind(D1, D2, D3, D4, D5) %>%
   mutate(TC=as.numeric(TC),
          Corpus="Reference",
          AUx=gsub(";","",AU),
-         num_authors=nchar(AU) - nchar(AUx))
+         num_authors=nchar(AU) - nchar(AUx) + 1)
 rm(D1, D2, D3, D4, D5)
 
 focal_corpus_biban <- biblioAnalysis(focal_corpus)
@@ -74,3 +74,27 @@ p2 <- ggplot(summ_stats) +
   ylab("Number of authors")
 p0 <- plot_grid(p2, p1)
 ggsave(filename="corpus_comparison.jpg", plot=p0, width = 6, height = 4)
+#p0
+
+
+
+
+
+
+p1 <- ggplot(corpus) +
+  geom_boxplot(mapping=aes(x=Corpus, y=TC)) +
+  geom_jitter(mapping=aes(x=Corpus, y=TC), width = 0.11)  +
+  ylab("Number of times cited") +
+  scale_y_continuous(trans = "log10") +
+  geom_point(data = summ_stats, mapping = aes(x = Corpus, y = mean_cites), col="blue", size=10, alpha=0.5)
+p2 <- ggplot(corpus) +
+  geom_boxplot(mapping=aes(x=Corpus, y=num_authors)) +
+  geom_jitter(mapping=aes(x=Corpus, y=num_authors), width = 0.11)  +
+  ylab("Number of authors") +
+  scale_y_continuous(trans = "log10") +
+  geom_point(data = summ_stats, mapping = aes(x = Corpus, y = mean_num_authors), col="blue", size=10, alpha=0.5) +
+  ggtitle("Data on log scale y-axis, with standard box & whisker,\nalso with blue circle shows the mean") +
+  theme(plot.title = element_text(size=5))
+p0 <- plot_grid(p2, p1)
+ggsave(filename="corpus_comparison_log.jpg", plot=p0, width = 6, height = 4)
+
