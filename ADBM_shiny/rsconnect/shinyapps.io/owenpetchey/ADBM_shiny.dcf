@@ -1,0 +1,12 @@
+name: ADBM_shiny
+title: ADBM_shiny
+username:
+account: owenpetchey
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 257609
+bundleId: 1196361
+url: https://owenpetchey.shinyapps.io/ADBM_shiny/
+when: 1517136873.56969
+asMultiple: FALSE
+asStatic: FALSE
