@@ -2,7 +2,7 @@
 ## and to send a text message alert if file changes do not meet 
 ## the specified criteria.
 
-## Use cronR or taskscheduleR to schedule running this script
+## Use Rstudio addin for cronR (mac) or taskscheduleR (windows) to schedule running this script
 
 ## Use twilio (web service with adequate free trial mode)
 ## to send text messages from R
@@ -21,11 +21,11 @@ yves_phone_number <- "+41xxxxxxxxx"
 twilios_phone_number <- "+41xxxxxxxxx"
 
 ## get file info
-file_info <- dir_info(path="/Users/owenpetchey/Desktop/folder_to_monitor", recurse = TRUE)
+file_info <- dir_info(path="/Users/owenpetchey/Desktop/monitor_this_folder", recurse = TRUE)
 
 ## now comes code specific to alerting if time since last change exceeds a threshold:
 ## alert if time since last chance exceeds threshold
-max_time_since_last_change <- 6 ## minutes
+max_time_since_last_change <- 60 ## minutes
 
 ## get most recent modification
 time_of_latest_change <- max(file_info$change_time)
@@ -41,5 +41,5 @@ if((Sys.time() - time_of_latest_change) > max_time_since_last_change) {
   alert_message <- paste0("From Oxygen recording computer: no file change during previous ",
                           time_since_last, "minutes.")
   tw_send_message(from = twilios_phone_number, to = yves_phone_number, 
-                body = "From Oxygen recording computer: no file change in last 6 minutes.")
+                body = alert_message)
 }
