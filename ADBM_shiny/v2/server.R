@@ -15,24 +15,35 @@ source("new.adbm.r")
 source("Plot.matrix.r")
 
 ## for testing
-#rm(list=ls())
-# num_S <- 20
-# mean_BM <- 10
-# sd_log_BM <- 1
-# a <- 1
-# ai <- 0.5
-# aj <- 0.5
-# r.a <- 1
-# r.b <- 10
-# e <- 1
-# ei <- 1
-# n <- 1
-# ni <- -0.75
+rm(list=ls())
+ref_seed <- 1
+ref_num_S <- 20
+ref_mean_BM <- 10
+ref_sd_log_BM <- 1
+ref_a <- 1
+ref_ai <- 0.5
+ref_aj <- 0.5
+ref_r.a <- 1
+ref_r.b <- 2
+ref_e <- 1
+ref_ei <- 1
+ref_n <- 1
+ref_ni <- -0.75
+
+set.seed(ref_seed <- 1)
+M <- sort(rlnorm(ref_num_S, ref_mean_BM, ref_sd_log_BM))
+
+EHL <- Ratio.allometric.EHL(M=M,
+                            e=ref_e,
+                            r.a=ref_r.a, r.b=ref_r.b,
+                            a=10^ref_a, ai=ref_ai, aj=ref_aj,
+                            n=ref_n, ni=ref_ni)
+median(EHL[[3]])
+webout <- Get.web(EHL)
+ref_L <- median(EHL[[3]])
 
 
-
-
-# Define server logic required to draw a histogram
+# Define server logic
 shinyServer(function(input, output) {
   
   M <- reactive({
@@ -46,8 +57,16 @@ shinyServer(function(input, output) {
     EHL <- Ratio.allometric.EHL(M=M(),
                                    e=input$e,
                                    r.a=input$r.a, r.b=input$r.b,
-                                   a=10^input$a, ai=input$ai, aj=input$aj,
+                                   a=10^ref_a, ai=input$ai, aj=input$aj,
                                    n=input$n, ni=input$ni)
+    new_L <- median(EHL[[3]])
+    a_factor <- ref_L/new_L
+    EHL <- Ratio.allometric.EHL(M=M(),
+                                e=input$e,
+                                r.a=input$r.a, r.b=input$r.b,
+                                a=10^input$a*a_factor, ai=input$ai, aj=input$aj,
+                                n=input$n, ni=input$ni)
+    
     webout <- Get.web(EHL)
     return(webout)
   })

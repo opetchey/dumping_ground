@@ -52,7 +52,7 @@ shinyUI(fluidPage(
        sliderInput("r.a",
                    "Handling time - mass scaling constant:",
                    min = 1,
-                   max = 2,
+                   max = 1,
                    value = 1),
        sliderInput("r.b",
                    "Critical predator - prey mass ratio:",
@@ -91,7 +91,7 @@ shinyUI(fluidPage(
       textOutput("connectance"),
       plotOutput("fwmatrixPlot", width="400px", height="400px"),
       plotOutput("fwgraphPlot", width="400px", height="400px")
-
+  
     )
   )
 ))
