@@ -11,19 +11,19 @@
 
 ## A species-trait matrix (species are rows, traits are columns)
 ## Here, the label that identifies species is in the first column (a through j)
-species.traits <- read.csv("C:\\path\\to\\data\\files\\here\\species.traits.csv")
+species.traits <- read.csv("species.traits.csv")
 ## species.traits <- read.csv("~/Desktop/web page/assets/fd/species.traits.csv")
 
 ## A matrix that describes which species are in each community
 ## Here, the label that identifies a species corresponds to the trait matrix
 ## and the labels that identify a community (first column; numbers) correspond to the
 ## community labels in the community.functioning file
-community.composition <- read.csv("C:\\path\\to\\data\\files\\here\\community.composition.csv")
+community.composition <- read.csv("community.composition.csv")
 ## community.composition <- read.csv("~/Desktop/web page/assets/fd/community.composition.csv")
 
 ## A matrix that describes the level of functioning (or whatever was measured)
 ## in each community
-community.functioning <- read.csv("C:\\path\\to\\data\\files\\here\\community.functioning.csv")
+community.functioning <- read.csv("community.functioning.csv")
 ## community.functioning <- read.csv("~/Desktop/web page/assets/fd/community.functioning.csv")
 
 # Some methods
@@ -47,12 +47,28 @@ FD <- tapply(community.composition[,2], community.composition[,1],
 
 ## or just let Getlength do the work!...
 FD <- Getlength(xtree, community.composition)
+FD
 
 ## Then look to see if the measure of functioning correlates with FD
 ## NB: make sure the rows ordering matches ##### THIS IS REALLY IMPORTANT!!! #####
 plot(FD, community.functioning[,2])
 
     
+## check effect of PCA
+pca_traits <- princomp(species.traits[,-1], cor = FALSE)$scores
+dimnames(pca_traits) <- list("species"=as.character(species.traits[,1]),"traits"=dimnames(species.traits)[[2]][-1])
+pca_distances <- dist(pca_traits) ## the minus 1 removes the first column (species names)
+pca_tree <- hclust(distances)
+pca_xtree <- Xtree(tree)
+
+pca_FD <- Getlength(pca_xtree, community.composition)
+
+plot(pca_tree)
+plot(tree)
+
+plot(pca_FD[,2], FD[,2])
+
+
 ## New FD
 Getlength <- function(xtree, comp=NA){
   if(!is.data.frame(comp))
