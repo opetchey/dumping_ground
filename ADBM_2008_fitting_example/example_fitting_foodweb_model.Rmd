@@ -1,0 +1,191 @@
+---
+title: "Example of fitting a food web model to data."
+author: "Owen Petchey"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+```
+
+```{r}
+library(rdryad)
+library(janitor)
+library(tidyverse)
+library(here)
+
+source("https://raw.githubusercontent.com/opetchey/dumping_ground/master/ADBM_shiny/Plot.matrix.r")
+source(here("r/ADBM.functions.r"))
+```
+
+# Introduction
+
+This report shows how the allometric diet breadth model of [Petchey et al (2008)](https://www.pnas.org/content/105/11/4191) was fit to empirical food web data. The report is basic and unrefined (purely functional in purpose).
+
+Note that in the [supplementary information](https://www.pnas.org/content/pnas/suppl/2008/03/07/0710672105.DC1/10672SuppAppendix.pdf) Table S4 of Petchey et al (2008), the last names of the food webs in the last two rows are swapped: the values in the last row are for the Ythan food web.
+
+# Empirical data
+
+## 2008 Ythan data
+
+This is the dataset used in Petchey et al (2008). Owen, who was responsible for data management and processing, does not have a record of how this dataset was created.
+
+```{r}
+ythan2008.all.web.info <- readRDS(here("data/2008_empirical_data/Ythan.web.2008.RDS"))
+Plot.matrix(ythan2008.all.web.info$predation.matrix)
+box()
+```
+
+## Ythan data from Cirtwill & Eklöf (2020)
+
+Here a version of the [Ythan dataset on Dryad](https://doi.org/10.5061/dryad.1mv20r6) (from [Cirtwill & Eklöf 2020](https://onlinelibrary.wiley.com/doi/10.1111/ele.12955)) is downloaded and then made ready. Code is hidden as there is quite a lot of uninteresting manipulation. The food web is somewhat different from that used in Petchey et al (2008).
+
+```{r echo = FALSE, warning = FALSE}
+doi_cirtwill_eklof <- "10.5061/dryad.1mv20r6"
+dd <- dryad_download(doi_cirtwill_eklof)
+temp = dd$`10.5061/dryad.1mv20r6`[grep(pattern="*.csv", dd$`10.5061/dryad.1mv20r6`)]
+all_species_data = read.csv2(temp[1])
+this_network1 <- "ythanjacob"
+if(this_network1 == "ythanjacob") this_network2 <- "ythan_spnames.csv"
+
+## WARNING: this code assumes the supplied food web matrix has columns and rows
+## sorted in the same order
+
+## WARNING: some of the cleaning of species names was only designed for one food web (Ythan)
+
+fw <- read.csv(temp[grep(this_network2, temp)]) %>%
+  clean_names() %>%
+  select(-1)
+rownames(fw) <- colnames(fw)
+sp <- all_species_data %>%
+  filter(Network == this_network1) %>%
+  mutate(sp_names = tolower(Species),
+         sp_names = str_replace_all(sp_names, " ", "_"),
+         sp_names = str_replace_all(sp_names, "\\.", ""),
+         sp_names = str_replace_all(sp_names, "\\(", ""),
+         sp_names = str_replace_all(sp_names, "\\)", ""),
+         sp_names = str_replace_all(sp_names, "/", "_"),
+         BodyWeight = parse_double(BodyWeight))
+
+
+## Arrange the species by body mass and remove NULLs
+sp <- sp %>%
+  arrange(BodyWeight) %>%
+  filter(BodyWeight != "NULL")
+
+## Species in the food web matrix but not in the species data
+#rownames(fw)[!(rownames(fw) %in%  sp$sp_names)]
+
+## Species in the food web matrix but not in the species data
+#sp$sp_names[!(sp$sp_names %in%  rownames(fw))]
+
+## Remove species from the food web that are not in the species data
+fw <- fw[(rownames(fw) %in%  sp$sp_names),(rownames(fw) %in%  sp$sp_names)]
+
+## Order food web by body weight
+fw <- fw[sp$sp_names, sp$sp_names]
+
+## Arrange data for fitting
+ythandryad.all.web.info <- list()
+ythandryad.all.web.info$predation.matrix <- fw
+ythandryad.all.web.info$species.sizes <- sp$BodyWeight
+
+Plot.matrix(ythandryad.all.web.info$predation.matrix)
+box()
+```
+
+
+# Fitting the model
+
+## Starting parameter values
+
+The search algorithm can get stuck in local optima, so the search is started multiple times each from a different location in parameter space. Those starting parameter values are loaded from a text file:
+
+```{r}
+ratio_initial_pars <- read.csv(here("pars/ratio.initial.pars.txt"),
+                               header = FALSE)
+```
+
+
+## Fit model to 2008 Ythan data
+
+Here the outcome is the same as in Petchey et al (2008).
+
+```{r eval = FALSE}
+NM.RH.web_2008 <- NM.ratio(ythan2008.all.web.info, ratio_initial_pars)
+```
+
+```{r eval = FALSE, echo = FALSE}
+saveRDS(NM.RH.web_2008, file=here(paste0("data/",
+                                         this_network1, "NMRHweb_2008.RDS")))
+```
+
+```{r echo = FALSE}
+NM.RH.web_2008 <- readRDS(file=here(paste0("data/",
+                                           this_network1, "NMRHweb_2008.RDS")))
+```
+
+```{r}
+Plot.matrix(NM.RH.web_2008$web)
+box()
+NM.RH.web_2008$power
+NM.RH.web_2008$pars
+sum(NM.RH.web_2008$web)
+sum(ythan2008.all.web.info$predation.matrix)
+```
+
+
+
+## Fit model to dryad Ythan data
+
+```{r eval = FALSE}
+NM.RH.web_dryad <- NM.ratio(ythandryad.all.web.info, ratio_initial_pars)
+```
+
+
+```{r eval = FALSE, echo = FALSE}
+saveRDS(NM.RH.web_dryad,
+        file=here(paste0("data/", this_network1, "NMRHweb_dryad.RDS")))
+```
+
+```{r echo = FALSE}
+NM.RH.web_dryad <- readRDS(file=here(paste0("data/",
+                                            this_network1, "NMRHweb_dryad.RDS")))
+```
+
+
+```{r}
+Plot.matrix(NM.RH.web_dryad$web)
+box()
+NM.RH.web_dryad$power
+NM.RH.web_dryad$pars
+sum(NM.RH.web_dryad$web)
+sum(ythandryad.all.web.info$predation.matrix)
+```
+
+
+
+
+# Using 2008 parameter estimates
+
+Using the 2008 parameter estimates gives the same results as in Petchey et al (2008).
+
+```{r}
+a_2008 <- 1.8e-17
+ai_2008 <- -1.98
+aj_2008 <- 2.19
+b_2008 <- 3.22e-4
+
+EHL_2008 <- Ratio.allometric.EHL(M = ythan2008.all.web.info$species.sizes,
+                           e = 1,
+                           r.a = 1, r.b = b_2008,
+                           a = a_2008, ai = ai_2008, aj = aj_2008,
+                           n = 1, ni=-3/4)
+web_2008 <- Get.web(EHL_2008)
+Plot.matrix(web_2008)
+box()
+Compare.links(web_2008, ythan2008.all.web.info$predation.matrix)
+```
+
