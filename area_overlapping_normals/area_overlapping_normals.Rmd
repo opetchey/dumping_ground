@@ -1,0 +1,69 @@
+---
+title: "area_overlapping_normals"
+author: "Owen Petchey"
+date: "4/3/2022"
+output: html_document
+---
+
+
+
+
+# Measuring trait diversity
+
+
+
+
+```{r}
+rm(list = ls())
+library(tidyverse)
+library(patchwork)
+library(mgcv)
+library(gratia)
+library(hypervolume)
+library(here)
+
+source(here("our_functions.r"))
+
+set.seed(13)
+num_species <- 10
+trait_tibble <- tibble(species = paste0("Sp-", 1:num_species),
+                       trait = runif(10))
+bw <- 0.05
+min_max_x <- get_minmax_x(trait_tibble$trait, bw)
+rr1 <- rd2_1d_curves1(trait_tibble, min_max_x, bw = bw)
+rr2 <- rd2_1d_curves2(trait_tibble, min_max_x, bw = bw)
+rd1 <- rd2_1d(trait_tibble, trait_limits = min_max_x, bw = bw)
+p1  <- vis_rd_method(rr1, rr2, rd1)
+
+trait_tibble <- trait_tibble %>%
+  slice(-5:-7)
+rr1 <- rd2_1d_curves1(trait_tibble, min_max_x, bw = bw)
+rr2 <- rd2_1d_curves2(trait_tibble, min_max_x, bw = bw)
+rd1 <- rd2_1d(trait_tibble, trait_limits = min_max_x, bw = bw)
+p2  <- vis_rd_method(rr1, rr2, rd1)
+
+trait_tibble <- trait_tibble %>%
+  slice(-2:-3)
+rr1 <- rd2_1d_curves1(trait_tibble, min_max_x, bw = bw)
+rr2 <- rd2_1d_curves2(trait_tibble, min_max_x, bw = bw)
+rd1 <- rd2_1d(trait_tibble, trait_limits = min_max_x, bw = bw)
+p3  <- vis_rd_method(rr1, rr2, rd1)
+
+trait_tibble <- tibble(species = paste0("Sp-", 1:2),
+                       trait = c(0,1))
+rr1 <- rd2_1d_curves1(trait_tibble, min_max_x, bw = bw)
+rr2 <- rd2_1d_curves2(trait_tibble, min_max_x, bw = bw)
+rd1 <- rd2_1d(trait_tibble, trait_limits = min_max_x, bw = bw)
+p4  <- vis_rd_method(rr1, rr2, rd1)
+
+trait_tibble <- tibble(species = paste0("Sp-", 1),
+                       trait = c(0.5))
+rr1 <- rd2_1d_curves1(trait_tibble, min_max_x, bw = bw)
+rr2 <- rd2_1d_curves2(trait_tibble, min_max_x, bw = bw)
+rd1 <- rd2_1d(trait_tibble, trait_limits = min_max_x, bw = bw)
+p5  <- vis_rd_method(rr1, rr2, rd1)
+
+
+(p1 / p2 / p3 / p4 / p5)
+```
+
